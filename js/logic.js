@@ -183,7 +183,7 @@ function renderMe(){
     `<button class="lv-btn ${S.avatar===a?'on':''}" data-av="${a}" style="width:50px;padding:6px 0"><b style="font-size:18px">${a}</b></button>`).join('');
 }
 
-function renderAll(){ renderHero(); renderStages(); renderCatalog(); renderBadges(); renderDaily(); renderMe(); }
+function renderAll(){ renderHero(); renderStages(); renderCatalog(); renderBadges(); renderDaily(); renderLeader(); renderMe(); }
 
 /* =========================================================
    G. 關卡引擎
@@ -473,7 +473,7 @@ document.addEventListener('click', e => {
   const tab = e.target.closest('.tab');
   if(tab){
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t === tab));
-    ['path','catalog','badges','daily','me'].forEach(v => $('view-' + v).classList.toggle('hidden', v !== tab.dataset.tab));
+    ['path','catalog','badges','daily','leader','me'].forEach(v => $('view-' + v).classList.toggle('hidden', v !== tab.dataset.tab));
     window.scrollTo({ top:0, behavior:'smooth' });
     return;
   }
@@ -647,5 +647,134 @@ $('btnReset').addEventListener('click', () => {
 setInterval(() => {
   if(S.daily.date !== todayKey()){ S.daily = { date:todayKey(), done:[] }; S.drawnOn = null; save(); renderDaily(); }
 }, 60000);
+
+/* =========================================================
+   H. 團長名冊（純前端：進度碼 → 名冊）
+   ---------------------------------------------------------
+   幼童軍過關 → 「我」分頁傳進度碼俾團長 → 團長貼入即睇到
+   每人 tick 咗邊幾關。名冊存團長自己部機（獨立 key），
+   唔使後台、唔使帳號。
+   ========================================================= */
+const ROSTER_KEY = 'cubgame_roster_v1';
+let ROSTER = loadRoster();
+function loadRoster(){
+  try{ const r = localStorage.getItem(ROSTER_KEY); return r ? JSON.parse(r) : { members:{} }; }
+  catch(e){ return { members:{} }; }
+}
+function saveRoster(){ try{ localStorage.setItem(ROSTER_KEY, JSON.stringify(ROSTER)); }catch(e){} }
+function decodeCode(txt){ return JSON.parse(decodeURIComponent(escape(atob(txt.trim())))); }
+function memberKey(st){ return (st.name || '未命名幼童軍') + '|' + (st.group || ''); }
+function passedCount(p){ return Object.values(p || {}).filter(Boolean).length; }
+function totalXPOf(m){
+  let x = passedCount(m.passed) * XP_QUEST;
+  BADGES.forEach(b => { const lv = (m.badges || {})[b.id] || 0; if(lv) x += (BADGE_XP[b.tiers] || [])[lv-1] || 0; });
+  return x + (m.bonus || 0);
+}
+
+function renderLeader(){
+  const ms = Object.entries(ROSTER.members || {});
+  if(!ms.length){
+    $('rosterList').innerHTML = '<div class="card"><p class="muted">名冊仲係空。貼第一張進度碼落上面，按「登記／更新」開始。</p></div>';
+    return;
+  }
+  ms.sort((a, b) => String(b[1].updatedAt || '').localeCompare(String(a[1].updatedAt || '')));
+  $('rosterList').innerHTML = ms.map(([k, m]) => {
+    const pills = '<div class="row" style="gap:8px;flex-wrap:wrap">' +
+      '<span class="pill" style="background:#EDF7F1;color:#1F6B4A;border-color:#BFE3CE">✅ ' + passedCount(m.passed) + '/35 關</span>' +
+      '<span class="pill" style="background:#EDF7F1;color:#1F6B4A;border-color:#BFE3CE">🎖️ ' + Object.values(m.badges || {}).filter(v => v > 0).length + ' 徽章</span>' +
+      '<span class="pill" style="background:#EDF7F1;color:#1F6B4A;border-color:#BFE3CE">⭐ ' + totalXPOf(m) + ' XP</span>' +
+      (m.streak ? '<span class="pill" style="background:#EDF7F1;color:#1F6B4A;border-color:#BFE3CE">🔥 ' + m.streak + ' 日</span>' : '') +
+      '</div>';
+    const detail = '<details style="margin-top:10px"><summary class="muted">睇逐關 tick 明細</summary><div style="margin-top:6px">' +
+      STAGES.map(st => '<div class="group-label">' + st.emoji + ' ' + esc(st.name) + '</div><div class="cat-list">' +
+        st.items.map((it, i) => '<div class="muted" style="padding:3px 0">' + ((m.passed || {})[st.id + '-' + i] ? '✅' : '⬜') + ' ' + esc(it) + '</div>').join('') +
+        '</div>').join('') + '</div></details>';
+    return '<div class="card"><div class="card-head"><div class="h2">' + (m.avatar || '🐺') + ' ' + esc(m.name || '未命名幼童軍') +
+      ' <small>' + esc(m.group || '未填旅團') + ' · 進度碼更新於 ' + String(m.updatedAt || '').slice(0, 10) + '</small></div></div>' +
+      pills + detail +
+      '<div class="row" style="margin-top:10px"><button class="btn small ghost" data-roster-del="' + esc(k) + '" style="color:#B4453A;border-color:#F0C9C4">移出名冊</button></div></div>';
+  }).join('');
+}
+
+$('btnRosterAdd').addEventListener('click', () => {
+  let st; try{ st = decodeCode($('rosterBox').value); }catch(e){ toast('進度碼格式不正確'); return; }
+  if(st && st.members){                                   // 名冊碼 → 合併
+    Object.entries(st.members).forEach(([k, v]) => { ROSTER.members[k] = v; });
+    saveRoster(); renderLeader(); beep('ok'); toast('名冊已匯入／合併'); $('rosterBox').value = '';
+    return;
+  }
+  if(!st || typeof st.passed !== 'object'){ toast('進度碼格式不正確'); return; }
+  const k = memberKey(st);
+  ROSTER.members[k] = { name:st.name, group:st.group, avatar:st.avatar, passed:st.passed,
+    badges:st.badges || {}, bonus:st.bonus || 0, streak:st.streak || 0,
+    lastActive:st.lastActive, updatedAt:new Date().toISOString() };
+  saveRoster(); renderLeader(); beep('ok');
+  toast('已登記：' + (st.name || '未命名幼童軍') + '（' + passedCount(st.passed) + '/35 關）');
+  $('rosterBox').value = '';
+});
+$('btnRosterExport').addEventListener('click', () => {
+  $('rosterBox').value = btoa(unescape(encodeURIComponent(JSON.stringify(ROSTER))));
+  $('rosterBox').select(); toast('名冊碼已產生（備份／交俾下一位團長）');
+});
+$('rosterList').addEventListener('click', e => {
+  const d = e.target.closest('[data-roster-del]');
+  if(!d) return;
+  const k = d.dataset.rosterDel;
+  if(confirm('將這位幼童軍移出名冊？（佢自己裝置嘅進度不受影響）')){
+    delete ROSTER.members[k]; saveRoster(); renderLeader(); toast('已移出');
+  }
+});
+
+/* =========================================================
+   I. 傳進度碼俾團長 + 安裝引導（PWA）
+   ========================================================= */
+$('btnShareWa').addEventListener('click', () => {
+  const code = btoa(unescape(encodeURIComponent(JSON.stringify(S))));
+  $('exportBox').value = code;
+  const msg = '【幼童軍歷險 · 進度】' + (S.name || '') + (S.group ? '（' + S.group + '）' : '') +
+    '\n已過 ' + passedCount(S.passed) + '/35 關\n進度碼：\n' + code;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+});
+$('btnCopyCode').addEventListener('click', () => {
+  const code = $('exportBox').value || ($('exportBox').value = btoa(unescape(encodeURIComponent(JSON.stringify(S)))));
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(code).then(() => toast('已複製進度碼'), () => { $('exportBox').select(); toast('請長按內容手動複製'); });
+  } else { $('exportBox').select(); toast('已選取，請複製'); }
+});
+
+let deferredInstall = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; showInstallBanner(); });
+function isStandalone(){ return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true; }
+function showInstallBanner(){
+  if(isStandalone()) return;
+  try{ if(localStorage.getItem('cubgame_install_dismissed')) return; }catch(e){}
+  $('installBanner').classList.remove('hidden');
+}
+function openHowModal(){
+  const ua = navigator.userAgent;
+  let txt;
+  if(isStandalone()) txt = '你已經裝咗（而家就係獨立視窗模式）。🎉';
+  else if(/iPhone|iPad|iPod/.test(ua)) txt = 'iOS Safari：\n1. 撳螢幕下方「分享」按鈕（方框加向上箭嘴）\n2. 向下滑，揀「加入主畫面」\n3. 右上角撳「加入」\n\n之後由主畫面個圖示開 app：離線照玩、進度留住。';
+  else if(/Android/.test(ua)) txt = 'Android Chrome：\n1. 撳右上角  選單\n2. 揀「加到主畫面」／「安裝應用程式」\n3. 撳「安裝」\n\n之後由主畫面個圖示開 app：離線照玩、進度留住。';
+  else txt = '桌面瀏覽器：\n撳網址列右邊嘅安裝圖示（⊕）即可裝成 app。\n或者直接書籤呢個網址都得。';
+  $('howText').textContent = txt;
+  $('howBg').classList.add('on');
+}
+$('btnInstall').addEventListener('click', () => {
+  if(deferredInstall){
+    deferredInstall.prompt();
+    Promise.resolve(deferredInstall.userChoice).catch(() => {});
+    deferredInstall = null;
+    $('installBanner').classList.add('hidden');
+  } else openHowModal();
+});
+$('btnInstallHow').addEventListener('click', openHowModal);
+$('btnInstallDismiss').addEventListener('click', () => {
+  $('installBanner').classList.add('hidden');
+  try{ localStorage.setItem('cubgame_install_dismissed', '1'); }catch(e){}
+});
+$('howClose').addEventListener('click', () => $('howBg').classList.remove('on'));
+$('howBg').addEventListener('click', e => { if(e.target === $('howBg')) $('howBg').classList.remove('on'); });
+showInstallBanner();
 
 renderAll();

@@ -216,8 +216,8 @@
   .q-foot{padding:12px 16px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#fff}
   .q-foot .btn{width:100%}
 
-  /* ---- nav 5 tabs ---- */
-  .nav-in{grid-template-columns:repeat(5,1fr)}
+  /* ---- nav 6 tabs ---- */
+  .nav-in{grid-template-columns:repeat(6,1fr)}
   .tab{font-size:9.5px}
   .tab .ic{font-size:18px}
 
