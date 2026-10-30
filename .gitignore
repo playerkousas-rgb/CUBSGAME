@@ -1,0 +1,24 @@
+# 依賴（呢個專案零依賴，但 npx serve 可能會留低嘢）
+node_modules/
+
+# Vercel
+.vercel/
+
+# 環境變數
+.env
+.env.*
+!.env.example
+
+# 系統／編輯器
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# log
+*.log
+npm-debug.log*
+
+# 注意：dist/index.html 係刻意 commit 嘅 —— 佢係「派俾小朋友／團長」嘅單檔成品，
+# 亦係 README 發佈流程嘅一部分。唔好 ignore 佢。

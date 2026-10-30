@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: 驗證資料 + 確認成品已 commit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 驗證 35 關資料完整性
+        run: npm run check
+
+      - name: 重新產生 docs/ 與 dist/
+        run: |
+          node tools/gen-docs.js
+          node build.js
+
+      - name: 確認 dist/ 與 docs/ 同程式碼同步
+        run: |
+          if ! git diff --quiet --exit-code -- dist/index.html docs/; then
+            echo "::error::dist/index.html 或 docs/ 未更新。"
+            echo "請在本機跑 \`npm run verify\`，然後把改動一併 commit。"
+            git --no-pager diff --stat -- dist/index.html docs/
+            exit 1
+          fi
+          echo "✓ dist/ 與 docs/ 已同步"
+
+      - name: 確認單檔成品大細合理
+        run: |
+          SIZE=$(wc -c < dist/index.html)
+          echo "dist/index.html = $SIZE bytes"
+          if [ "$SIZE" -lt 40000 ] || [ "$SIZE" -gt 400000 ]; then
+            echo "::error::單檔成品大細異常（$SIZE bytes），build 可能出咗問題。"
+            exit 1
+          fi
+          echo "✓ 大細正常"
