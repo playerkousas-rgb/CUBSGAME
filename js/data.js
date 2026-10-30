@@ -14,27 +14,59 @@ const STAGES = [
     items:['戶外活動','歷險挑戰','分享經驗','領導才能'] }
 ];
 
+/* 幼童軍活動徽章 — 依現行官方《幼童軍手冊》網上版（2025年8月）：
+   一級制 33 款 + 三級制 7 款 = 40 款，合共 33 + 7×3 = 54 個徽章。
+   （舊制為 35 款一級制 + 7 款三級制 = 42 款 / 56 個；自然章已於 2020-04-01 取消，
+    世界童軍環境章、維護自然世界章已移出活動徽章，另新增道路安全章。）
+   id 一經發佈不要改：localStorage 的 S.badges 以 id 作 key。 */
 const BADGES = [
-  { id:'cyclist',  name:'單車章',    group:'戶外', emoji:'🚲', tiers:1 },
-  { id:'explorer', name:'探險章',    group:'戶外', emoji:'🧗', tiers:1 },
-  { id:'mapread',  name:'讀圖章',    group:'戶外', emoji:'🗺️', tiers:1 },
-  { id:'sailor',   name:'風帆章',    group:'戶外', emoji:'⛵', tiers:1 },
-  { id:'boatman',  name:'水手章',    group:'戶外', emoji:'⚓', tiers:1 },
-  { id:'camp',     name:'露營章',    group:'戶外', emoji:'⛺', tiers:1 },
-  { id:'knot',     name:'繩結章',    group:'技能', emoji:'🪢', tiers:1 },
-  { id:'cook',     name:'烹飪章',    group:'技能', emoji:'🍳', tiers:1 },
-  { id:'comm',     name:'通訊章',    group:'技能', emoji:'📡', tiers:1 },
-  { id:'pioneer',  name:'先鋒工程章', group:'技能', emoji:'🪜', tiers:1 },
-  { id:'nature',   name:'自然章',    group:'技能', emoji:'🍃', tiers:1 },
-  { id:'firstaid', name:'護理章',    group:'服務', emoji:'🩹', tiers:1 },
-  { id:'inclusive',name:'共融章',    group:'服務', emoji:'🤝', tiers:1 },
-  { id:'animal',   name:'愛護動物章', group:'服務', emoji:'🐾', tiers:1 },
-  { id:'wellness', name:'體適能章',  group:'服務', emoji:'💪', tiers:1 },
-  { id:'art',      name:'藝術章',    group:'興趣', emoji:'🎨', tiers:1 },
-  { id:'music',    name:'音樂章',    group:'興趣', emoji:'🎵', tiers:1 },
-  { id:'archery',  name:'射箭章',    group:'興趣', emoji:'🏹', tiers:3 },
-  { id:'swim',     name:'游泳章',    group:'興趣', emoji:'🏊', tiers:3 },
-  { id:'canoe',    name:'獨木舟章',  group:'興趣', emoji:'🛶', tiers:3 }
+  /* ---- 戶外（12 款）---- */
+  { id:'cyclist',      name:'單車章',      group:'戶外', emoji:'🚲', tiers:1 },
+  { id:'explorer',     name:'探險章',      group:'戶外', emoji:'🧗', tiers:1 },
+  { id:'mapread',      name:'讀圖章',      group:'戶外', emoji:'🗺️', tiers:1 },
+  { id:'sailor',       name:'滑浪風帆章',  group:'戶外', emoji:'⛵', tiers:1 },
+  { id:'boatman',      name:'水手章',      group:'戶外', emoji:'⚓', tiers:1 },
+  { id:'camp',         name:'露營章',      group:'戶外', emoji:'⛺', tiers:1 },
+  { id:'watersafety',  name:'水上安全章',  group:'戶外', emoji:'🛟', tiers:1 },
+  { id:'roadsafety',   name:'道路安全章',  group:'戶外', emoji:'🚦', tiers:1 },
+  { id:'swim',         name:'游泳章',      group:'戶外', emoji:'🏊', tiers:3 },
+  { id:'canoe',        name:'獨木舟章',    group:'戶外', emoji:'🛶', tiers:3 },
+  { id:'athlete',      name:'田徑章',      group:'戶外', emoji:'🏃', tiers:3 },
+  { id:'parko',        name:'公園定向章',  group:'戶外', emoji:'🧭', tiers:3 },
+
+  /* ---- 技能（11 款）---- */
+  { id:'knot',         name:'繩結章',      group:'技能', emoji:'🪢', tiers:1 },
+  { id:'cook',         name:'烹飪章',      group:'技能', emoji:'🍳', tiers:1 },
+  { id:'firstaid',     name:'急救章',      group:'技能', emoji:'🩹', tiers:1 },
+  { id:'handyman',     name:'勞作章',      group:'技能', emoji:'🔨', tiers:1 },
+  { id:'homehelp',     name:'家務章',      group:'技能', emoji:'🧹', tiers:1 },
+  { id:'computer',     name:'電腦章',      group:'技能', emoji:'💻', tiers:1 },
+  { id:'photographer', name:'攝影章',      group:'技能', emoji:'📷', tiers:1 },
+  { id:'collector',    name:'搜集章',      group:'技能', emoji:'📦', tiers:1 },
+  { id:'linguist',     name:'語言章',      group:'技能', emoji:'🗣️', tiers:1 },
+  { id:'writer',       name:'寫作章',      group:'技能', emoji:'✍️', tiers:1 },
+  { id:'planting',     name:'園藝章',      group:'技能', emoji:'🌱', tiers:1 },
+
+  /* ---- 服務（5 款）---- */
+  { id:'inclusive',    name:'共融章',      group:'服務', emoji:'🤝', tiers:1 },
+  { id:'animal',       name:'愛護動物章',  group:'服務', emoji:'🐾', tiers:1 },
+  { id:'pets',         name:'寵物章',      group:'服務', emoji:'🐕', tiers:1 },
+  { id:'worldfriend',  name:'世界友誼章',  group:'服務', emoji:'🌍', tiers:1 },
+  { id:'religious',    name:'宗教章',      group:'服務', emoji:'🕊️', tiers:1 },
+
+  /* ---- 興趣（12 款）---- */
+  { id:'art',          name:'藝術章',      group:'興趣', emoji:'🎨', tiers:1 },
+  { id:'music',        name:'音樂章',      group:'興趣', emoji:'🎵', tiers:1 },
+  { id:'entertainer',  name:'娛樂章',      group:'興趣', emoji:'🎭', tiers:1 },
+  { id:'reader',       name:'閱讀章',      group:'興趣', emoji:'📖', tiers:1 },
+  { id:'astronomer',   name:'天象章',      group:'興趣', emoji:'🔭', tiers:1 },
+  { id:'scientist',    name:'科學章',      group:'興趣', emoji:'🔬', tiers:1 },
+  { id:'weatherman',   name:'氣象章',      group:'興趣', emoji:'☁️', tiers:1 },
+  { id:'hkhistory',    name:'香港歷史章',  group:'興趣', emoji:'🏛️', tiers:1 },
+  { id:'sportsman',    name:'運動章',      group:'興趣', emoji:'⚽', tiers:1 },
+  { id:'archery',      name:'射箭章',      group:'興趣', emoji:'🏹', tiers:3 },
+  { id:'wellness',     name:'體適能章',    group:'興趣', emoji:'💪', tiers:3 },
+  { id:'gymnastics',   name:'體操章',      group:'興趣', emoji:'🤸', tiers:3 }
 ];
 
 const MISSIONS = ['整理童軍制服與徽章','溫習童軍誓詞與規律','幫家人做一件家務','練習一個繩結',

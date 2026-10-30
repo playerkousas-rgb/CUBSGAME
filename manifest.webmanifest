@@ -1,0 +1,35 @@
+{
+  "name": "幼童軍歷險 · Cub Scout Quest",
+  "short_name": "幼童軍歷險",
+  "description": "把香港童軍總會幼童軍支部的進度獎章，變成 35 關可以玩的小遊戲。純前端、零依賴、離線可玩。",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#12281E",
+  "theme_color": "#12281E",
+  "categories": ["education", "games"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

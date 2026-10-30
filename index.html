@@ -5,6 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#12281E">
 <title>幼童軍歷險 · 35 關全部解鎖</title>
+<!--PWA-->
+<meta name="description" content="把香港童軍總會幼童軍支部的進度獎章，變成 35 關可以玩的小遊戲。純前端、零依賴、可加入主畫面、離線可玩。">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="幼童軍歷險">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_Hant">
+<meta property="og:title" content="幼童軍歷險 · Cub Scout Quest">
+<meta property="og:description" content="5 個進度獎章 × 35 關小遊戲。純前端、零依賴、離線可玩。">
+<meta property="og:image" content="icons/icon-512.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<!--/PWA-->
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -54,7 +70,7 @@
         <span class="pill" style="background:#EDF7F1;color:#1F6B4A;border-color:#BFE3CE" id="badgeCount">0</span>
       </div>
       <div id="badgeGrid"></div>
-      <p class="src">※ 紅=初級 / 黃=中級 / 綠=高級（三級制徽章）。示範 20 款，官方全套為 42 款共 56 個徽章。</p>
+      <p class="src">※ 紅=初級 / 黃=中級 / 綠=高級（三級制徽章）。全套 40 款活動徽章、合共 54 個（一級制 33 款＋三級制 7 款），依現行《幼童軍手冊》網上版。</p>
     </div>
   </section>
 
@@ -137,5 +153,22 @@
 
 <script src="js/data.js"></script>
 <script src="js/logic.js"></script>
+<!--PWA-->
+<script>
+/* Service worker 註冊。
+   只喺 secure context 行（https 或 localhost）；用 file:// 直接開檔案時
+   瀏覽器唔俾註冊 SW，呢度靜靜地跳過，唔會彈 error。
+   單檔版 dist/index.html 會由 build.js 剥除成段 —— 佢唔需要 PWA。 */
+(function () {
+  if (!('serviceWorker' in navigator)) return;
+  var h = location.hostname;
+  var secure = location.protocol === 'https:' || h === 'localhost' || h === '127.0.0.1';
+  if (!secure) return;
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  });
+})();
+</script>
+<!--/PWA-->
 </body>
 </html>

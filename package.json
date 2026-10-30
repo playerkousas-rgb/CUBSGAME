@@ -1,13 +1,22 @@
 {
   "name": "cub-scout-quest",
-  "version": "0.3.0",
+  "version": "0.4.1",
   "private": true,
-  "description": "幼童軍進度獎章遊戲化 — 35 關小遊戲，純前端零依賴",
+  "description": "幼童軍進度獎章遊戲化 — 35 關小遊戲，純前端零依賴，PWA 可離線玩",
   "scripts": {
     "build": "node build.js",
     "dev": "npx --yes serve . -l 3000",
-    "check": "node tools/check.js"
+    "check": "node tools/check.js",
+    "gen-docs": "node tools/gen-docs.js",
+    "verify": "npm run check && npm run gen-docs && npm run build"
   },
-  "keywords": ["scout", "cub-scout", "gamification", "education"],
+  "keywords": [
+    "scout",
+    "cub-scout",
+    "gamification",
+    "education",
+    "pwa",
+    "offline-first"
+  ],
   "license": "MIT"
 }
