@@ -1,0 +1,13 @@
+{
+  "name": "cub-scout-quest",
+  "version": "0.3.0",
+  "private": true,
+  "description": "幼童軍進度獎章遊戲化 — 35 關小遊戲，純前端零依賴",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "npx --yes serve . -l 3000",
+    "check": "node tools/check.js"
+  },
+  "keywords": ["scout", "cub-scout", "gamification", "education"],
+  "license": "MIT"
+}

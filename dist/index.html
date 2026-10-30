@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#12281E">
+<title>幼童軍歷險 · 35 關全部解鎖</title>
+<style>
+/* 幼童軍歷險 — 樣式 */
+:root{
+    --ink:#1B2A22; --ink-2:#4C6157; --cream:#FAF6EA; --card:#fff;
+    --green:#1F6B4A; --green-2:#2E8B57; --gold:#D9A227; --gold-2:#F2C94C;
+    --line:#E6E0CE; --shadow:0 6px 20px rgba(20,45,33,.10);
+    --red:#C0453A;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+    background:radial-gradient(1200px 500px at 50% -10%,#2A5A42 0,rgba(42,90,66,0) 60%),
+      linear-gradient(180deg,#12281E 0,#173324 210px,var(--cream) 210px,var(--cream) 100%);
+    color:var(--ink);min-height:100vh;padding-bottom:92px;
+  }
+  .wrap{max-width:480px;margin:0 auto;padding:0 16px}
+  /* hero */
+  .hero{padding:18px 0 14px;color:#fff}
+  .hero-top{display:flex;align-items:center;gap:12px}
+  .avatar{width:54px;height:54px;border-radius:50%;flex:0 0 auto;background:linear-gradient(160deg,#F2C94C,#D9A227);
+    display:grid;place-items:center;font-size:28px;box-shadow:0 0 0 3px rgba(255,255,255,.18),0 8px 18px rgba(0,0,0,.25)}
+  .hero-name{font-size:18px;font-weight:800;display:flex;align-items:center;gap:8px}
+  .hero-sub{font-size:12px;color:#BFD8C8;margin-top:3px}
+  .pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.22);padding:3px 9px;border-radius:999px;color:#FFE9A8}
+  .xpbar{margin-top:12px}
+  .xpbar-labels{display:flex;justify-content:space-between;font-size:11.5px;color:#CFE3D6;margin-bottom:6px;font-weight:600}
+  .xpbar-track{height:10px;border-radius:99px;background:rgba(255,255,255,.16);overflow:hidden}
+  .xpbar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#F2C94C,#F7E08A);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+  .stat{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:8px 6px;text-align:center}
+  .stat b{display:block;font-size:16px;color:#fff;line-height:1.3}
+  .stat span{font-size:10.5px;color:#B9D2C4}
+  /* cards */
+  .card{background:var(--card);border-radius:18px;padding:16px;margin-top:14px;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.03)}
+  .card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
+  .h2{font-size:15.5px;font-weight:800;display:flex;align-items:center;gap:7px}
+  .h2 small{display:block;font-size:11px;font-weight:600;color:var(--ink-2)}
+  .muted{color:var(--ink-2);font-size:12.5px;line-height:1.55}
+  /* stage list */
+  .stage{position:relative;display:flex;gap:13px;padding-bottom:14px}
+  .stage:last-child{padding-bottom:0}
+  .rail{display:flex;flex-direction:column;align-items:center;flex:0 0 44px}
+  .node{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:20px;background:#F0EBDA;
+    border:2.5px solid var(--line);z-index:1}
+  .node.done{background:linear-gradient(160deg,#F7E7A8,#EFCB5E);border-color:#D9A227;box-shadow:0 4px 12px rgba(217,162,39,.35)}
+  .node.open{background:#fff;border-color:var(--green-2)}
+  .node.locked{filter:grayscale(1);opacity:.5}
+  .connector{width:2.5px;flex:1 1 auto;background:repeating-linear-gradient(180deg,var(--line) 0 5px,transparent 5px 10px);margin-top:4px;min-height:12px}
+  .connector.solid{background:var(--gold)}
+  .stage-body{flex:1 1 auto;min-width:0}
+  .stage-title{font-size:14.5px;font-weight:800;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .tag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:99px}
+  .tag.done{background:#E7F4EC;color:#1F6B4A;border:1px solid #BFE3CE}
+  .tag.now{background:#FFF3D6;color:#8A5A2B;border:1px solid #F2DCA4}
+  .tag.lock{background:#F1F0EC;color:#8D8A80;border:1px solid #E1DFD6}
+  .stage-req{font-size:11.5px;color:var(--ink-2);margin-top:3px}
+  .prog{height:6px;border-radius:99px;background:#EFEDE4;margin-top:8px;overflow:hidden}
+  .prog i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green-2),#5FBF88);transition:width .45s}
+  .items{margin-top:10px;display:none;flex-direction:column;gap:7px}
+  .items.open{display:flex}
+  /* mission row = 一關 */
+  .q-row{display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;background:#FAF8F0;
+    border:1px solid #EFEBDD;cursor:pointer;transition:.15s}
+  .q-row:active{transform:scale(.985)}
+  .q-row.passed{background:#EDF7F1;border-color:#BFE3CE}
+  .q-row.locked{opacity:.45;pointer-events:none}
+  .q-ic{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:17px;flex:0 0 auto;
+    background:#fff;border:1.5px solid var(--line)}
+  .q-row.passed .q-ic{background:var(--green);border-color:var(--green);color:#fff}
+  .q-meta{flex:1 1 auto;min-width:0}
+  .q-name{font-size:13px;font-weight:700;line-height:1.3}
+  .q-type{font-size:10.5px;color:var(--ink-2);font-weight:600;margin-top:2px}
+  .q-go{font-size:11px;font-weight:800;color:var(--green);white-space:nowrap}
+  .q-row.passed .q-go{color:#8A9A91}
+  /* badges */
+  .group-label{font-size:11.5px;font-weight:800;color:var(--ink-2);letter-spacing:1px;margin:14px 0 9px}
+  .group-label:first-child{margin-top:0}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+  .bg{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;background:none;border:none;padding:0}
+  .ring{width:100%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-size:22px;background:#F1EEE2;
+    border:2.5px solid #E2DCC7;position:relative;transition:.18s}
+  .ring.l1{border-color:#CD7A62;background:#FBEDE8}
+  .ring.l2{border-color:#E0B33C;background:#FCF4DE}
+  .ring.l3{border-color:#3C8F62;background:#E7F4EC;box-shadow:0 4px 10px rgba(60,143,98,.22)}
+  .ring:active{transform:scale(.94)}
+  .ring .lv{position:absolute;bottom:-2px;right:-2px;min-width:17px;height:17px;border-radius:99px;background:var(--ink);
+    color:#fff;font-size:9.5px;font-weight:800;display:grid;place-items:center;padding:0 4px;border:2px solid #fff}
+  .bg-name{font-size:10px;font-weight:700;color:var(--ink-2);text-align:center;line-height:1.25}
+  .bg-name.on{color:var(--ink)}
+  /* daily */
+  .checkin{display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;
+    background:linear-gradient(135deg,#FFF4D8,#FDE9B6);border:1px solid #F0DCA0}
+  .checkin .flame{font-size:30px}
+  .item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:12px;background:#FAF8F0;
+    border:1px solid #EFEBDD;cursor:pointer;font-size:13px;font-weight:600}
+  .item.on{background:#EDF7F1;border-color:#BFE3CE}
+  .item .box{flex:0 0 21px;height:21px;border-radius:7px;border:2px solid #CFC9B4;display:grid;place-items:center;font-size:13px;color:#fff;background:#fff}
+  .item.on .box{background:var(--green);border-color:var(--green)}
+  .item .xp{margin-left:auto;font-size:10.5px;font-weight:800;color:var(--gold)}
+  .btn{border:none;border-radius:12px;padding:10px 16px;font-size:13.5px;font-weight:800;cursor:pointer;background:var(--green);
+    color:#fff;box-shadow:0 4px 12px rgba(31,107,74,.28);transition:.15s}
+  .btn:active{transform:scale(.97)}
+  .btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
+  .btn.gold{background:linear-gradient(135deg,#F2C94C,#D9A227);color:#3A2A05;box-shadow:0 4px 12px rgba(217,162,39,.35)}
+  .btn.small{padding:7px 12px;font-size:12px}
+  .btn:disabled{opacity:.45;box-shadow:none;cursor:default}
+  .quote{border-radius:18px;padding:18px;color:#F5EFD9;position:relative;overflow:hidden;
+    background:linear-gradient(150deg,#1F4A35,#12281E);border:1px solid rgba(242,201,76,.35)}
+  .quote:after{content:"";position:absolute;inset:0;background:radial-gradient(300px 160px at 90% -20%,rgba(242,201,76,.28),transparent 70%)}
+  .quote .qtag{position:relative;font-size:10.5px;font-weight:800;letter-spacing:2px;color:#F2C94C}
+  .quote p{position:relative;margin:8px 0 0;font-size:14.5px;line-height:1.65;font-weight:600}
+  .quote .who{position:relative;margin-top:10px;font-size:11.5px;color:#A9C3B4}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+  .field label{font-size:11.5px;font-weight:800;color:var(--ink-2)}
+  input,textarea{width:100%;padding:11px 12px;border-radius:12px;border:1.5px solid var(--line);font-size:14px;
+    font-family:inherit;background:#FCFBF5;color:var(--ink)}
+  input:focus,textarea:focus{outline:none;border-color:var(--green-2)}
+  textarea{resize:vertical;font-size:11px;font-family:ui-monospace,Menlo,monospace;min-height:76px}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  .src{font-size:11px;color:#8D8A80;line-height:1.6;margin-top:10px}
+  nav{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);padding:8px 0 calc(8px + env(safe-area-inset-bottom))}
+  .nav-in{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+  .tab{background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;
+    font-size:10.5px;font-weight:800;color:#9A9689;cursor:pointer}
+  .tab .ic{font-size:19px;line-height:1;filter:grayscale(1);opacity:.6;transition:.15s}
+  .tab.on{color:var(--green)}
+  .tab.on .ic{filter:none;opacity:1;transform:translateY(-1px)}
+  .modal-bg{position:fixed;inset:0;background:rgba(12,26,19,.55);z-index:60;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px)}
+  .modal-bg.on{display:flex}
+  .modal{background:#fff;width:100%;max-width:480px;border-radius:22px 22px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));
+    animation:up .22s cubic-bezier(.2,.8,.2,1)}
+  @keyframes up{from{transform:translateY(40px);opacity:.5}to{transform:translateY(0);opacity:1}}
+  .modal h3{margin:0 0 4px;font-size:17px}
+  .modal .sub{font-size:12px;color:var(--ink-2);margin-bottom:16px}
+  .lv-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .lv-btn{border:2px solid var(--line);background:#FCFBF5;border-radius:13px;padding:11px 4px;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:800;color:var(--ink-2)}
+  .lv-btn b{font-size:15px;color:var(--ink)}
+  .lv-btn.on{border-color:var(--green);background:#EDF7F1;color:var(--green)}
+  #toast{position:fixed;left:50%;bottom:104px;transform:translate(-50%,20px);z-index:100;background:var(--ink);color:#fff;
+    padding:11px 18px;border-radius:99px;font-size:13px;font-weight:800;opacity:0;pointer-events:none;transition:.28s;
+    white-space:nowrap;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+  #toast.on{opacity:1;transform:translate(-50%,0)}
+  .hidden{display:none !important}
+
+  /* ============ QUEST OVERLAY ============ */
+  #quest{position:fixed;inset:0;z-index:90;background:var(--cream);display:none;flex-direction:column;
+    max-width:480px;margin:0 auto;box-shadow:0 0 60px rgba(0,0,0,.35)}
+  #quest.on{display:flex}
+  .q-top{display:flex;align-items:center;gap:11px;padding:14px 16px;background:linear-gradient(135deg,#1F4A35,#12281E);color:#fff}
+  .q-close{width:34px;height:34px;border-radius:50%;border:none;background:rgba(255,255,255,.16);color:#fff;
+    font-size:17px;cursor:pointer;flex:0 0 auto}
+  .q-head-t{flex:1 1 auto;min-width:0}
+  .q-head-t b{font-size:14.5px;display:block;line-height:1.25}
+  .q-head-t span{font-size:11px;color:#BFD8C8}
+  .q-hearts{font-size:12px;font-weight:800;color:#F2C94C;white-space:nowrap}
+  .q-body{flex:1 1 auto;overflow-y:auto;padding:18px 16px 26px}
+  .q-intro{font-size:13px;color:var(--ink-2);line-height:1.6;margin:0 0 16px}
+  .q-step{font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--gold);margin-bottom:8px}
+  .q-q{font-size:16.5px;font-weight:800;line-height:1.45;margin:0 0 16px}
+  .opt{width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:14px;padding:13px 15px;
+    font-size:14px;font-weight:700;margin-bottom:9px;cursor:pointer;display:flex;align-items:center;gap:10px;
+    font-family:inherit;color:var(--ink);transition:.15s}
+  .opt:active{transform:scale(.99)}
+  .opt.ok{border-color:var(--green);background:#EDF7F1;color:var(--green)}
+  .opt.no{border-color:var(--red);background:#FDEEEC;color:var(--red)}
+  .opt.dim{opacity:.45}
+  .opt-flag{padding:8px;justify-content:center}
+  .opt-flag svg{width:100%;height:auto;border-radius:8px;display:block}
+  .flag-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .flag-grid .opt{margin:0}
+  .fb{border-radius:14px;padding:13px 15px;font-size:13px;line-height:1.6;margin:4px 0 14px}
+  .fb.ok{background:#EDF7F1;border:1px solid #BFE3CE;color:#1F5F42}
+  .fb.no{background:#FDEEEC;border:1px solid #F0C9C4;color:#93372E}
+  .fb b{display:block;margin-bottom:3px;font-size:12.5px}
+  .shake{animation:sh .34s}
+  @keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+  /* match */
+  .match-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .m-col{display:flex;flex-direction:column;gap:8px}
+  .m-card{background:#fff;border:2px solid var(--line);border-radius:13px;padding:11px 10px;font-size:12.5px;
+    font-weight:700;line-height:1.35;cursor:pointer;font-family:inherit;color:var(--ink);text-align:left;min-height:52px;
+    display:flex;align-items:center;transition:.15s}
+  .m-card.sel{border-color:var(--gold);background:#FFF8E5}
+  .m-card.done{border-color:#BFE3CE;background:#EDF7F1;color:#5E7A6C;opacity:.75;pointer-events:none}
+  /* order */
+  .ord-pool{display:flex;flex-direction:column;gap:8px}
+  .ord-item{background:#fff;border:2px solid var(--line);border-radius:13px;padding:12px 14px;font-size:13.5px;
+    font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink);text-align:left;display:flex;align-items:center;gap:10px;transition:.15s}
+  .ord-item .n{width:22px;height:22px;border-radius:50%;background:#EFEDE4;color:var(--ink-2);font-size:11px;font-weight:800;
+    display:grid;place-items:center;flex:0 0 auto}
+  .ord-item.taken{opacity:.4;pointer-events:none}
+  .ord-list{display:flex;flex-direction:column;gap:7px;margin-top:14px}
+  .ord-slot{border:2px dashed #D8D2BE;border-radius:13px;padding:11px 13px;font-size:13px;font-weight:700;color:#9A9689;
+    display:flex;align-items:center;gap:9px;min-height:46px}
+  .ord-slot.filled{border-style:solid;border-color:var(--green-2);background:#EDF7F1;color:var(--ink)}
+  .ord-slot .n{width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;font-size:11px;font-weight:800;
+    display:grid;place-items:center;flex:0 0 auto}
+  /* memory */
+  .mem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+  .mem{aspect-ratio:1;border-radius:14px;border:2px solid var(--line);background:linear-gradient(150deg,#2A5A42,#173324);
+    font-size:26px;display:grid;place-items:center;cursor:pointer;color:transparent;transition:.2s;font-family:inherit}
+  .mem.flip{background:#fff;color:var(--ink);border-color:var(--gold)}
+  .mem.done{background:#EDF7F1;border-color:#BFE3CE;color:var(--ink);pointer-events:none}
+  /* result */
+  .result{text-align:center;padding:14px 4px}
+  .result .big{font-size:56px;line-height:1}
+  .result h3{font-size:21px;margin:12px 0 6px}
+  .result p{font-size:13.5px;color:var(--ink-2);line-height:1.6;margin:0 0 6px}
+  .reward{display:inline-flex;align-items:center;gap:6px;margin:12px 0 4px;background:#FFF4D8;border:1px solid #F0DCA0;
+    color:#8A5A2B;font-weight:800;font-size:13px;padding:8px 16px;border-radius:99px}
+  .action-box{background:#fff;border:2px solid var(--line);border-radius:16px;padding:16px}
+  .action-box ol{margin:8px 0 0;padding-left:20px;font-size:13.5px;line-height:1.8;color:var(--ink)}
+  .q-foot{padding:12px 16px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#fff}
+  .q-foot .btn{width:100%}
+
+  /* ---- nav 5 tabs ---- */
+  .nav-in{grid-template-columns:repeat(5,1fr)}
+  .tab{font-size:9.5px}
+  .tab .ic{font-size:18px}
+
+  /* ---- alts chips ---- */
+  .alts-line{margin-top:18px;padding-top:14px;border-top:1px dashed var(--line)}
+  .alts-t{font-size:11px;font-weight:800;color:var(--ink-2);letter-spacing:.3px;margin-bottom:8px}
+  .alt-chip{display:inline-flex;align-items:center;gap:5px;background:#F4F1E4;border:1px solid #E6E0CE;
+    border-radius:99px;padding:5px 11px;font-size:11.5px;font-weight:700;color:var(--ink);margin:0 6px 6px 0}
+  .alt-chip i{font-style:normal;font-size:9.5px;font-weight:800;color:#8A8578;background:#fff;border-radius:99px;padding:1px 6px}
+
+  /* ---- catalog ---- */
+  .cat-list{display:flex;flex-direction:column;gap:8px}
+  .cat{background:#FAF8F0;border:1px solid #EFEBDD;border-radius:14px;padding:10px 12px}
+  .cat-top{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+  .cat-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+  .cat-name{font-size:13px;font-weight:800}
+  .cat-main{font-size:11.5px;color:var(--green);font-weight:700}
+  .cat-main b{font-weight:800}
+  .cat-alts{margin-top:7px;display:flex;flex-wrap:wrap;gap:5px}
+  .cat-alts .alt-chip{margin:0;font-size:10.5px;padding:4px 9px}
+
+  /* ---- sort ---- */
+  .sort-item{background:#fff;border:2px solid var(--gold);border-radius:16px;padding:26px 16px;text-align:center;
+    font-size:19px;font-weight:800;margin-bottom:16px;box-shadow:0 6px 18px rgba(217,162,39,.16)}
+  .sort-buckets{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .bucket{border:2px solid var(--line);background:#FCFBF5;border-radius:14px;padding:18px 8px;font-size:12.5px;
+    font-weight:800;font-family:inherit;color:var(--ink);cursor:pointer;line-height:1.35;min-height:66px}
+  .bucket:active{transform:scale(.97);border-color:var(--green-2)}
+
+  /* ---- find ---- */
+  .find-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:800;
+    color:var(--ink);margin-bottom:8px}
+  .find-timer{background:#FFF4D8;border:1px solid #F0DCA0;color:#8A5A2B;border-radius:99px;padding:4px 12px;font-size:12.5px}
+  .find-grid{display:grid;gap:7px}
+  .find-cell{aspect-ratio:1;border-radius:12px;border:1.5px solid #E6E0CE;background:#fff;font-size:20px;
+    display:grid;place-items:center;cursor:pointer;font-family:inherit;transition:.12s}
+  .find-cell:active{transform:scale(.94)}
+  .find-cell.hit{background:#E7F4EC;border-color:#6FBF92;box-shadow:0 0 0 2px rgba(46,139,87,.18)}
+  .find-cell.miss{background:#FDEEEC;border-color:#E8B4AC;color:#C0453A}
+
+  /* ---- simon ---- */
+  .simon-status{background:#F4F1E4;border-radius:12px;padding:10px 13px;font-size:12.5px;font-weight:700;
+    color:var(--ink-2);margin-bottom:14px;text-align:center}
+  .simon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .simon-cell{aspect-ratio:1;border-radius:16px;border:2px solid var(--line);background:#FCFBF5;font-size:30px;
+    display:grid;place-items:center;cursor:pointer;font-family:inherit;transition:.12s}
+  .simon-cell.hi{background:linear-gradient(150deg,#F7E7A8,#EFCB5E);border-color:#D9A227;
+    transform:scale(1.06);box-shadow:0 6px 18px rgba(217,162,39,.4)}
+
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <div class="avatar" id="avatar">🐺</div>
+      <div style="flex:1 1 auto;min-width:0">
+        <div class="hero-name"><span id="hName">小狼</span><span class="pill" id="hRank">見習小狼</span></div>
+        <div class="hero-sub" id="hSub">幼童軍 · 金紫荊之路</div>
+      </div>
+    </div>
+    <div class="xpbar">
+      <div class="xpbar-labels"><span id="xpNow">0 XP</span><span id="xpNext">下一級：200 XP</span></div>
+      <div class="xpbar-track"><div class="xpbar-fill" id="xpFill" style="width:0%"></div></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="sBadge">0</b><span>活動徽章</span></div>
+      <div class="stat"><b id="sQuest">0/35</b><span>已過關</span></div>
+      <div class="stat"><b id="sStage">0/5</b><span>進度獎章</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="view-path">
+    <div class="card">
+      <div class="card-head"><div class="h2">🗺️ 歷險地圖 <small>全部 35 關已解鎖</small></div></div>
+      <div id="stageList"></div>
+      <p class="src">※ 項目依香港童軍總會《幼童軍訓練綱要》章節名稱整理；遊戲內容為示範設計，考核細則以官方綱要為準。</p>
+    </div>
+  </section>
+
+  <section id="view-catalog" class="hidden">
+    <div class="card">
+      <div class="card-head"><div class="h2">🎲 玩法總表 <small>每項 3 個玩法，★ 是現正可玩</small></div></div>
+      <p class="muted" style="margin-bottom:14px">每項都有 1 個可玩＋2 個備選。邊個玩法啱你，話我知我就換。</p>
+      <div id="catalogList"></div>
+    </div>
+  </section>
+
+  <section id="view-badges" class="hidden">
+    <div class="card">
+      <div class="card-head">
+        <div class="h2">🎖️ 活動徽章 <small>點徽章可設定級別</small></div>
+        <span class="pill" style="background:#EDF7F1;color:#1F6B4A;border-color:#BFE3CE" id="badgeCount">0</span>
+      </div>
+      <div id="badgeGrid"></div>
+      <p class="src">※ 紅=初級 / 黃=中級 / 綠=高級（三級制徽章）。示範 20 款，官方全套為 42 款共 56 個徽章。</p>
+    </div>
+  </section>
+
+  <section id="view-daily" class="hidden">
+    <div class="card">
+      <div class="checkin">
+        <div class="flame">🔥</div>
+        <div style="flex:1 1 auto">
+          <b id="streakTitle">連續 0 日</b>
+          <div class="muted" id="streakHint">今日完成任何一關，即可保住連續紀錄。</div>
+        </div>
+      </div>
+      <div class="card-head" style="margin-top:16px;margin-bottom:10px"><div class="h2">📋 今日任務 <small>+30 XP</small></div></div>
+      <div id="missionList" style="display:flex;flex-direction:column;gap:7px"></div>
+    </div>
+    <div class="card">
+      <div class="card-head" style="margin-bottom:10px"><div class="h2">🃏 今日激勵卡</div></div>
+      <div class="quote">
+        <div class="qtag" id="cardTag">森林故事</div>
+        <p id="cardText">準備好就抽一張。</p>
+        <div class="who" id="cardWho"></div>
+      </div>
+      <button class="btn gold" id="drawCard" style="width:100%;margin-top:12px">抽一張卡</button>
+    </div>
+  </section>
+
+  <section id="view-me" class="hidden">
+    <div class="card">
+      <div class="card-head"><div class="h2">👤 我的資料</div></div>
+      <div class="field"><label>名字 / 暱稱</label><input id="inName" placeholder="例如：陳小明" maxlength="12"></div>
+      <div class="field"><label>旅團</label><input id="inGroup" placeholder="例如：第 XX 旅 幼童軍團" maxlength="30"></div>
+      <div class="field"><label>頭像</label><div class="row" id="avatarRow"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="h2">📤 匯出 / 匯入 <small>貼給團長</small></div></div>
+      <textarea id="exportBox" spellcheck="false" placeholder="按「匯出」產生進度碼，貼給團長；或貼上進度碼後按「匯入」。"></textarea>
+      <div class="row" style="margin-top:10px">
+        <button class="btn small" id="btnExport">匯出進度碼</button>
+        <button class="btn small ghost" id="btnImport">匯入進度碼</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="h2">⚙️ 設定</div></div>
+      <button class="btn ghost" id="btnReset" style="width:100%;color:#B4453A;border-color:#F0C9C4">清除所有進度</button>
+      <p class="src">資料只存在這台裝置的瀏覽器，不會上傳。獎章制度資料來源：香港童軍總會幼童軍支部《幼童軍訓練綱要》。</p>
+    </div>
+  </section>
+</main>
+
+<nav>
+  <div class="nav-in">
+    <button class="tab on" data-tab="path"><span class="ic">🗺️</span>地圖</button>
+    <button class="tab" data-tab="catalog"><span class="ic">🎲</span>玩法</button>
+    <button class="tab" data-tab="badges"><span class="ic">🎖️</span>徽章</button>
+    <button class="tab" data-tab="daily"><span class="ic">🔥</span>每日</button>
+    <button class="tab" data-tab="me"><span class="ic">🐺</span>我</button>
+  </div>
+</nav>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h3 id="mTitle">徽章</h3>
+    <div class="sub" id="mSub"></div>
+    <div class="lv-row" id="mLevels"></div>
+    <button class="btn ghost" id="mClose" style="width:100%;margin-top:16px">關閉</button>
+  </div>
+</div>
+
+<div id="quest">
+  <div class="q-top">
+    <button class="q-close" id="qClose">✕</button>
+    <div class="q-head-t"><b id="qTitle">關卡</b><span id="qSub"></span></div>
+    <div class="q-hearts" id="qScore"></div>
+  </div>
+  <div class="q-body" id="qBody"></div>
+  <div class="q-foot" id="qFoot"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* =========================================================
+   A. 徽章制度資料（香港童軍總會 · 幼童軍支部）
+   ========================================================= */
+const STAGES = [
+  { id:'member', name:'會員章', emoji:'🌍', req:'建議入團後 3 個月內完成',
+    items:['認識童軍運動、誓詞與規律','辨認國旗與區旗及其含意','認識幼童軍各級徽章','完成 Safe from Harm 保護課程'] },
+  { id:'cub', name:'幼童軍獎章', emoji:'🐺', req:'獲會員章後 6 個月內完成',
+    items:['追蹤','繩結','郊野守則','日行一善','護理和救傷','誓詞規律','童軍家庭章（第二段）'] },
+  { id:'adv', name:'幼童軍歷奇章', emoji:'🧭', req:'獲幼童軍獎章後 1 年內完成',
+    items:['戶外活動','運動與愛好','幫助他人','照顧自己','科學與大自然','創意天地','我的社區','國家與文化','誓詞規律','童軍家庭章（第三段）'] },
+  { id:'crest', name:'幼童軍高級歷奇章', emoji:'⛰️', req:'獲歷奇章後 1 年半內完成',
+    items:['戶外活動','運動與愛好','幫助他人','照顧自己','科學與大自然','創意天地','我的社區','國家與文化','誓詞規律','童軍家庭章（第四段）'] },
+  { id:'bauhinia', name:'金紫荊獎章', emoji:'🌸', req:'年滿 9 歲半、完成歷奇章後可考核',
+    items:['戶外活動','歷險挑戰','分享經驗','領導才能'] }
+];
+
+const BADGES = [
+  { id:'cyclist',  name:'單車章',    group:'戶外', emoji:'🚲', tiers:1 },
+  { id:'explorer', name:'探險章',    group:'戶外', emoji:'🧗', tiers:1 },
+  { id:'mapread',  name:'讀圖章',    group:'戶外', emoji:'🗺️', tiers:1 },
+  { id:'sailor',   name:'風帆章',    group:'戶外', emoji:'⛵', tiers:1 },
+  { id:'boatman',  name:'水手章',    group:'戶外', emoji:'⚓', tiers:1 },
+  { id:'camp',     name:'露營章',    group:'戶外', emoji:'⛺', tiers:1 },
+  { id:'knot',     name:'繩結章',    group:'技能', emoji:'🪢', tiers:1 },
+  { id:'cook',     name:'烹飪章',    group:'技能', emoji:'🍳', tiers:1 },
+  { id:'comm',     name:'通訊章',    group:'技能', emoji:'📡', tiers:1 },
+  { id:'pioneer',  name:'先鋒工程章', group:'技能', emoji:'🪜', tiers:1 },
+  { id:'nature',   name:'自然章',    group:'技能', emoji:'🍃', tiers:1 },
+  { id:'firstaid', name:'護理章',    group:'服務', emoji:'🩹', tiers:1 },
+  { id:'inclusive',name:'共融章',    group:'服務', emoji:'🤝', tiers:1 },
+  { id:'animal',   name:'愛護動物章', group:'服務', emoji:'🐾', tiers:1 },
+  { id:'wellness', name:'體適能章',  group:'服務', emoji:'💪', tiers:1 },
+  { id:'art',      name:'藝術章',    group:'興趣', emoji:'🎨', tiers:1 },
+  { id:'music',    name:'音樂章',    group:'興趣', emoji:'🎵', tiers:1 },
+  { id:'archery',  name:'射箭章',    group:'興趣', emoji:'🏹', tiers:3 },
+  { id:'swim',     name:'游泳章',    group:'興趣', emoji:'🏊', tiers:3 },
+  { id:'canoe',    name:'獨木舟章',  group:'興趣', emoji:'🛶', tiers:3 }
+];
+
+const MISSIONS = ['整理童軍制服與徽章','溫習童軍誓詞與規律','幫家人做一件家務','練習一個繩結',
+  '步行 30 分鐘','閱讀童軍手冊一節','收拾自己的背包','讚美或幫助一位同伴','維持今日飲水與睡眠紀錄'];
+
+const CARDS = [
+  { tag:'森林故事', text:'「狼群不會拋下走得慢的那一隻。」', who:'阿基拉 Akela' },
+  { tag:'力量', text:'一次做得不好，不代表你做不到；只是還沒做完。', who:'巴希拉 Bagheera' },
+  { tag:'自律', text:'先把最難的那一件事做完，今天就已經贏了一半。', who:'巴魯 Baloo' },
+  { tag:'智慧', text:'先問「為什麼要做」，再問「怎樣做最快」。', who:'卡阿 Kaa' },
+  { tag:'勇氣', text:'害怕是正常的；帶住害怕仍然去做，才叫做勇敢。', who:'阿基拉 Akela' },
+  { tag:'專注', text:'把一件事做到好，比把十件事做到一半更難，也更值得。', who:'巴希拉 Bagheera' },
+  { tag:'童軍規律', text:'幼童軍值得信任，而且日行一善。', who:'幼童軍規律' }
+];
+
+const RANKS = [{xp:0,name:'見習小狼'},{xp:200,name:'小狼'},{xp:500,name:'灰狼'},{xp:1000,name:'敏捷狼'},
+  {xp:1800,name:'勇敢狼'},{xp:3000,name:'智慧狼'},{xp:5000,name:'狼群首領'}];
+const AVATARS = ['🐺','🦊','🦉','🐻','🦌','🐿️','🦅','🐯'];
+const XP_QUEST = 60, XP_MISSION = 30, BADGE_XP = { 1:[120], 3:[60,120,200] };
+
+const FLAG_CN = `<svg viewBox="0 0 60 40"><rect width="60" height="40" fill="#DE2910"/>
+  <text x="12" y="20" font-size="14" fill="#FFDE00" text-anchor="middle" dominant-baseline="central">★</text>
+  <text x="26" y="9" font-size="6" fill="#FFDE00" text-anchor="middle" dominant-baseline="central">★</text>
+  <text x="30" y="15" font-size="6" fill="#FFDE00" text-anchor="middle" dominant-baseline="central">★</text>
+  <text x="30" y="23" font-size="6" fill="#FFDE00" text-anchor="middle" dominant-baseline="central">★</text>
+  <text x="26" y="29" font-size="6" fill="#FFDE00" text-anchor="middle" dominant-baseline="central">★</text></svg>`;
+const FLAG_HK = `<svg viewBox="0 0 60 40"><rect width="60" height="40" fill="#DE2910"/>
+  <g transform="translate(30,20)" fill="#fff"><circle r="3"/>
+    <ellipse cx="0" cy="-6.6" rx="3" ry="4.8"/>
+    <ellipse cx="0" cy="-6.6" rx="3" ry="4.8" transform="rotate(72)"/>
+    <ellipse cx="0" cy="-6.6" rx="3" ry="4.8" transform="rotate(144)"/>
+    <ellipse cx="0" cy="-6.6" rx="3" ry="4.8" transform="rotate(216)"/>
+    <ellipse cx="0" cy="-6.6" rx="3" ry="4.8" transform="rotate(288)"/></g></svg>`;
+
+/* =========================================================
+   B. 36 個關卡（全部已解鎖）
+   type: quiz | match | order | memory | sort | find | simon | action
+   ========================================================= */
+const GAMES = {
+
+/* ---------------- 會員章 ---------------- */
+'member-0': { type:'order', title:'誓詞重組', icon:'📜',
+  intro:'幼童軍誓詞被人撕碎了！按正確次序排好。',
+  items:['對別人盡義務','我願以信譽為誓，竭盡所能','遵守幼童軍規律','對神明及國家盡責任'],
+  correct:['我願以信譽為誓，竭盡所能','對神明及國家盡責任','對別人盡義務','遵守幼童軍規律'],
+  tip:'誓詞是承諾，不是口號。',
+  alts:[['誓詞填空','填空','把漏掉的字補回去，難度比排序高'],['童軍歷史時間線','排序','1907 貝登堡創立 → 香港童軍 → 今天']] },
+
+'member-1': { type:'quiz', title:'國旗與區旗', icon:'🇨🇳',
+  intro:'分清中華人民共和國國旗與香港特別行政區區旗。',
+  qs:[
+    { q:'哪一面是中華人民共和國國旗？', flags:[FLAG_CN, FLAG_HK], a:0,
+      why:'國旗是五星紅旗：紅色底，左上角一顆大星和四顆小星。' },
+    { q:'國旗上一共有幾顆星？', opts:['3 顆','5 顆','6 顆','7 顆'], a:1, why:'一顆大星加四顆小星，共五顆。' },
+    { q:'香港特別行政區區旗上的花是甚麼？', opts:['牡丹','洋紫荊','梅花','蓮花'], a:1,
+      why:'白色洋紫荊花，紅旗白花，代表「一國兩制」。' },
+    { q:'升旗儀式時，我們應該怎樣做？', opts:['繼續和同伴談話','立正、面向旗幟','坐着等儀式結束','拿手機拍照'], a:1,
+      why:'肅立、面向旗幟、保持安靜，是對國家和旗幟的尊重。' } ],
+  alts:[['升旗儀式模擬','情境','跟着情境一步一步做出正確動作'],['旗幟找不同','找不同','比較兩面旗的細節差異']] },
+
+'member-2': { type:'match', title:'徽章大搜查', icon:'🔍',
+  intro:'把每枚獎章和它的意思連起來。',
+  pairs:[['會員章','宣誓後取得，代表成為世界童軍一份子'],
+         ['幼童軍獎章','幼童軍的基本課程，項目全部必修'],
+         ['幼童軍歷奇章','八大範疇的進階訓練'],
+         ['幼童軍高級歷奇章','歷奇章的深化版本'],
+         ['金紫荊獎章','幼童軍支部最高榮譽']],
+  tip:'愈高階的獎章，對年齡和時間的要求都不同。',
+  alts:[['徽章階梯','排序','把五枚獎章由低到高排好'],['圖像配對','配對','用徽章圖案代替文字，適合年幼成員']] },
+
+'member-3': { type:'quiz', title:'保護自己', icon:'🛡️',
+  intro:'Safe from Harm：遇到以下情況，你會怎樣做？',
+  qs:[
+    { q:'有人叫你跟他去一個隱蔽、沒有其他人的地方。', opts:['跟他去，因為他是大人','拒絕，並立即告訴領袖或家長','不理他，自己走開就算','叫同學一起去'], a:1,
+      why:'拒絕 + 立即告訴可信任的大人，兩步都要做。' },
+    { q:'網上有人說想認識你，叫你傳一張自己的相片給他。', opts:['傳給他，反正只是相片','拒絕，並告訴家長','先問他叫甚麼名字再決定','封鎖他，但不告訴任何人'], a:1,
+      why:'不要傳任何相片或個人資料，並要讓家長知道。' },
+    { q:'有同伴在團集會一直取笑你、推你。', opts:['忍住不說，免得麻煩','反過來打他','告訴領袖，這不是你做錯','缺席以後的集會'], a:2,
+      why:'被欺負不是你的錯；告訴領袖是最有效的做法。' },
+    { q:'在營地裡發現自己迷路了，附近沒有人。', opts:['不停亂跑找出路','留在原地、大聲呼叫或吹哨子','躲起來等天亮','走進密林找水源'], a:1,
+      why:'留在原地（STOP：Stop, Think, Observe, Plan），吹哨子讓別人找到你。' } ],
+  alts:[['尋找危險','限時','在一幅營地圖中限時點出所有危險處'],['求助對象配對','配對','遇到甚麼事，該找哪個大人']] },
+
+/* ---------------- 幼童軍獎章 ---------------- */
+'cub-0': { type:'memory', title:'追蹤符號', icon:'🐾',
+  intro:'追蹤要記住見過的痕跡。翻開兩張相同的符號卡。',
+  pairs:['🐾','🌿','🪨','💧','🔥','⛺'],
+  tip:'真實追蹤時，腳印、折枝、石堆都是同伴留下的記號。',
+  alts:[['林間找記號','限時','限時在林地畫面中找出所有腳印'],['痕跡推理','選擇','看痕跡判斷動物往哪裡走']] },
+
+'cub-1': { type:'match', title:'繩結配對', icon:'🪢',
+  intro:'把繩結和它的用途連起來。',
+  pairs:[['平結','接駁兩條粗細相同的繩'],['雙套結','把繩固定在柱或樹幹上'],
+         ['稱人結','繩末端打出不會收緊的圈，可救人'],['接繩結','接駁兩條粗細不同的繩']],
+  tip:'練繩結要用手，不是用眼。',
+  alts:[['繩結步驟排序','排序','把打結的每個步驟排好'],['限時打結','操作','按正確次序點擊繩頭，限時完成']] },
+
+'cub-2': { type:'quiz', title:'郊野守則', icon:'🏕️',
+  intro:'在山野裡，甚麼才是對的做法？',
+  qs:[
+    { q:'行山時見到地上有別人留下的垃圾。', opts:['不關我的事','帶走它，山野比我們來之前更乾淨','踢到路邊草叢','拍照放上網'], a:1,
+      why:'「Leave No Trace」——離開時比來時更乾淨。' },
+    { q:'營火晚會結束，要離開營地了。', opts:['用水完全澆熄，確認不再冒煙','讓它自己熄滅','用泥土蓋住就算','留下炭火給下一隊用'], a:0,
+      why:'必須完全澆熄並用手感受溫度，山火往往由未熄的炭引起。' },
+    { q:'路上遇到一隻小野豬。', opts:['上前餵牠吃東西','慢慢後退、保持距離、不要驚嚇牠','大聲叫牠走開','追住牠拍照'], a:1,
+      why:'野生動物不需要我們餵食；保持距離對雙方都安全。' },
+    { q:'迎面有其他人上山，路很窄。', opts:['搶先過去','讓路、打招呼','假裝看不見','叫對方退後'], a:1,
+      why:'禮讓和問好，是郊野最基本的禮貌。' } ],
+  alts:[['帶走還是留下','分類','哪些一定要帶走、哪些可以留下'],['LNT 七原則排序','排序','無痕山野七大原則的正確次序']] },
+
+'cub-3': { type:'action', title:'日行一善', icon:'💛',
+  intro:'這一關要在真實世界完成，不能按掣過關。',
+  steps:['今天主動幫一個人做一件事（家人、同學、鄰居都可以）','說明你幫了誰、做了甚麼','請家長或領袖核對後按「完成」'],
+  tip:'幼童軍規律：幼童軍值得信任，而且日行一善。',
+  alts:[['善行卡收集','收集','每完成一次善行抽一張卡，收集全套'],['七日善行日記','日記','連續七天寫下一件善行']] },
+
+'cub-4': { type:'order', title:'急救步驟', icon:'🩹',
+  intro:'同伴擦傷了手臂，正確處理次序是？',
+  items:['通知領袖並陪伴傷者','用清水沖洗傷口','貼上膠布或紗布','先清潔雙手'],
+  correct:['先清潔雙手','用清水沖洗傷口','貼上膠布或紗布','通知領袖並陪伴傷者'],
+  tip:'處理任何傷口前，先清潔自己的雙手。',
+  alts:[['傷勢判斷','選擇','看情境判斷該怎樣處理'],['急救用品分類','分類','哪些該放進急救包']] },
+
+'cub-5': { type:'quiz', title:'規律考驗', icon:'⚜️',
+  intro:'幼童軍規律，在生活裡怎樣做？',
+  qs:[
+    { q:'你答應了幫同學帶一本書，但今天下雨。', opts:['下雨就不帶了','照樣帶，因為答應過','明天再算','叫他自己來拿'], a:1,
+      why:'幼童軍值得信任——答應了就要做到。' },
+    { q:'小隊比賽輸了。', opts:['怪隊友','向對手說「恭喜」','要求再比一次','離場不再參加'], a:1,
+      why:'友愛與體育精神，比贏更重要。' },
+    { q:'在團集會上，領袖正在講話。', opts:['繼續和旁邊的人聊天','安靜聆聽','大聲發表意見','玩手機'], a:1,
+      why:'有禮、專注、服從，是對別人的尊重。' } ],
+  alts:[['規律填空','填空','補上漏掉的規律字句'],['十秒快答','限時','十秒內連環答完所有規律題']] },
+
+'cub-6': { type:'action', title:'童軍家庭章（第二段）', icon:'🏠',
+  intro:'和家人一起完成，這一關由家人見證。',
+  steps:['在家中分擔一項固定的家務（收衫、洗碗、倒垃圾）','連續一星期做到','和家人談一次：你覺得自己有甚麼改變','請家長核對後按「完成」'],
+  tip:'家庭是最小的團隊，也是第一個服務的地方。',
+  alts:[['家務七日挑戰','清單','七天家務打卡，集滿蓋章'],['家人訪問','訪問','記錄家人小時候的故事']] },
+
+/* ---------------- 幼童軍歷奇章 ---------------- */
+'adv-0': { type:'sort', title:'行山裝備', icon:'🎒',
+  intro:'揹包太小了！把東西分成「要帶」和「不需要」。',
+  buckets:['行山要帶','其實不需要'],
+  items:[{t:'地圖與指南針',b:0,why:'迷路時最基本的工具。'},
+         {t:'足夠的飲水',b:0,why:'口渴才飲已經太遲。'},
+         {t:'輕便風雨衣',b:0,why:'山區天氣變化快。'},
+         {t:'哨子',b:0,why:'吹哨比叫喊省力，聲音傳得更遠。'},
+         {t:'遊戲機',b:1,why:'增加重量，山上用不着。'},
+         {t:'玻璃杯',b:1,why:'易碎又危險，用輕便水樽代替。'}],
+  tip:'帶得對，比帶得多重要。',
+  alts:[['路線規劃','選擇','看地圖選出最安全的路線'],['天氣判斷','選擇','看雲和風決定是否出發']] },
+
+'adv-1': { type:'find', title:'器材大搜查', icon:'🏀',
+  intro:'營地裡藏了 6 個球，限時全部找出來。',
+  target:'⚽', count:6, cells:20, time:30,
+  decoys:['🌿','🍄','🪵','🌼','🐜','🍃','🪨','🦋'],
+  tip:'觀察力是運動與愛好的第一步。',
+  alts:[['運動配對','配對','球類 ↔ 比賽場地'],['體能挑戰計時','計時','一分鐘掌上壓／跳繩自我挑戰']] },
+
+'adv-2': { type:'quiz', title:'幫助他人', icon:'🤝',
+  intro:'幫助人，方法比熱心更重要。',
+  qs:[
+    { q:'在商場見到一位長者跌倒在地，沒有流血。', opts:['立即扶他起身','先問他哪裡痛，再找人幫手','拍片上網','假裝看不見'], a:1,
+      why:'不確定傷勢時不要亂移動傷者，先詢問、再求助。' },
+    { q:'同學忘記帶課本，急得想哭。', opts:['借他一起看','取笑他','叫他自己想辦法','立即報告老師'], a:0,
+      why:'在自己能力範圍內伸出援手，就是最好的幫助。' },
+    { q:'在營地有同伴迷路後哭了起來。', opts:['大聲責怪他','立即通知領袖並陪着他','叫他冷靜自己想辦法','繼續遊戲'], a:1,
+      why:'陪伴 + 通知領袖，兩樣同時做。' } ],
+  alts:[['求助熱線配對','配對','999／1823／撒瑪利亞會該打哪個'],['角色扮演卡','情境','抽卡演練，領袖評分']] },
+
+'adv-3': { type:'sort', title:'好習慣還是壞習慣', icon:'🪥',
+  intro:'照顧自己，從分辨開始。',
+  buckets:['照顧自己的好習慣','要改掉的習慣'],
+  items:[{t:'每天運動 20 分鐘',b:0,why:'規律運動比偶爾狂做有效。'},
+         {t:'睡前刷牙',b:0,why:'最基本也最容易被忽略。'},
+         {t:'通宵打機',b:1,why:'睡眠不足會影響專注和情緒。'},
+         {t:'早餐只飲汽水',b:1,why:'高糖、沒有營養。'},
+         {t:'每天整理書包',b:0,why:'減少遺漏，也減少明早的慌張。'},
+         {t:'長時間低頭看手機',b:1,why:'傷頸又傷眼。'}],
+  tip:'照顧自己不是自私，是負責。',
+  alts:[['一日作息表','排序','把一天的活動排成合理次序'],['睡眠計算器','計算','輸入作息時間，看實際睡眠夠不夠']] },
+
+'adv-4': { type:'quiz', title:'大自然的秘密', icon:'🔬',
+  intro:'科學與大自然：觀察、提問、找答案。',
+  qs:[
+    { q:'為甚麼樹葉是綠色的？', opts:['因為葉綠素吸收陽光','因為水是綠色的','因為泥土染的','沒有原因'], a:0,
+      why:'葉綠素行光合作用，把陽光變成養分。' },
+    { q:'在野外想找方向，以下哪一項不可靠？', opts:['太陽的位置','指南針','手機地圖 App（有電時）','硬幣的正反面'], a:3,
+      why:'硬幣和方向無關，其餘都可以用來判斷方向。' },
+    { q:'觀察大自然最重要的工具是甚麼？', opts:['放大鏡','耐性和眼睛','無人機','顯微鏡'], a:1,
+      why:'願意停下來看，比任何工具都重要。' } ],
+  alts:[['食物鏈排序','排序','把生產者、消費者、分解者排好'],['樹葉配對','配對','葉形 ↔ 樹種']] },
+
+'adv-5': { type:'action', title:'創意天地', icon:'🎨',
+  intro:'這一關沒有標準答案，只有你自己想的答案。',
+  steps:['用隨手可得的材料，做一件「可以幫到人」的小發明或小作品','在團集會向小隊介紹它，說明你解決了甚麼問題','由領袖評分並核對後按「完成」'],
+  tip:'創意不是天才的專利，是願意動手試。',
+  alts:[['原創口號生成器','工具','輸入小隊特色，生成自己的口號'],['廢物再造設計','設計','用三件垃圾設計一件新用品']] },
+
+'adv-6': { type:'match', title:'社區設施配對', icon:'🏙️',
+  intro:'我最熟悉的社區，你認得幾多？',
+  pairs:[['消防局','救火與緊急救援'],['郵政局','寄信與包裹'],['圖書館','借閱書本與自修'],
+         ['街市','買新鮮食材'],['社區中心','興趣班與居民活動']],
+  tip:'認識社區設施，就知道遇到事情可以找誰。',
+  alts:[['社區地圖任務','探索','實地找出五個設施並拍照'],['緊急電話配對','配對','999／1823／999 以外的求助號碼']] },
+
+'adv-7': { type:'quiz', title:'國家與文化', icon:'🏮',
+  intro:'認識我們的國家和香港。',
+  qs:[
+    { q:'香港特別行政區是哪一年回歸祖國？', opts:['1995 年','1997 年','1999 年','2000 年'], a:1, why:'1997 年 7 月 1 日。' },
+    { q:'中國的國慶日是幾月幾日？', opts:['7 月 1 日','10 月 1 日','8 月 1 日','5 月 4 日'], a:1, why:'10 月 1 日。' },
+    { q:'以下哪一項是香港的非物質文化遺產？', opts:['大坑舞火龍','行山','飲早茶外賣','搭地鐵'], a:0, why:'大坑舞火龍是國家級非物質文化遺產。' } ],
+  alts:[['節日配對','配對','節日 ↔ 習俗與食物'],['中國地理拼圖','拼圖','把省份拼回正確位置']] },
+
+'adv-8': { type:'quiz', title:'規律的兩難', icon:'⚖️',
+  intro:'有些情況，規律不會直接給你答案。',
+  qs:[
+    { q:'你發現好朋友偷偷多拿了營地的食物。', opts:['幫他隱瞞','私下勸他還回去，不肯就告訴領袖','立即大聲揭發','自己也拿一份'], a:1,
+      why:'忠誠不是包庇；先私下規勸，是對朋友負責。' },
+    { q:'小隊比賽中，對手犯規但裁判沒看見。', opts:['趁機贏','提裁判注意','也照樣犯規','假裝不說話'], a:1,
+      why:'可信任，包括在沒人看見的時候。' },
+    { q:'你答應領袖保守一個驚喜秘密，同伴一直追問。', opts:['說出來，反正是朋友','守秘密，並告訴他之後會知道','說一半','騙他不知道'], a:1,
+      why:'守住承諾，同時誠實地面對朋友。' } ],
+  alts:[['規律辯論卡','討論','抽一張兩難卡，小隊討論五分鐘'],['我的一週反思','日記','寫下這週哪一次最難守住規律']] },
+
+'adv-9': { type:'action', title:'童軍家庭章（第三段）', icon:'🏡',
+  intro:'比第二段更進一步：由你主動計劃。',
+  steps:['自己計劃並主持一次家庭活動（煮一餐、安排一次行山）','記錄過程：事前準備、當日情況、事後檢討','請家長核對後按「完成」'],
+  tip:'由「被安排」變成「會安排」，就是成長。',
+  alts:[['家庭會議主持','主持','自己主持一次家庭會議並記錄'],['一週家務輪值','計劃','設計一份全家人的家務表']] },
+
+/* ---------------- 高級歷奇章 ---------------- */
+'crest-0': { type:'order', title:'搭營步驟', icon:'⛺',
+  intro:'起一個帳幕，次序錯就會塌。',
+  items:['拉起營繩固定','穿好營骨','清理地面石頭','選擇平坦安全的營地','鋪上營幕'],
+  correct:['選擇平坦安全的營地','清理地面石頭','鋪上營幕','穿好營骨','拉起營繩固定'],
+  tip:'營地選錯，之後做幾多都補救不了。',
+  alts:[['營地選址判斷','選擇','看圖判斷哪個位置最適合紮營'],['繩結應用','配對','哪一種情況用哪一個結']] },
+
+'crest-1': { type:'simon', title:'動作口令', icon:'🤸',
+  intro:'領袖示範一組動作，你要順序重複一次。',
+  symbols:['👏','🦘','⬆️','🔄','🤸'],
+  len:5,
+  tip:'專注看、專心記，是運動學習的基本功。',
+  alts:[['運動規則快答','限時','限時答出各項運動的基本規則'],['訓練計劃設計','計劃','為自己設計一週訓練表']] },
+
+'crest-2': { type:'action', title:'服務記錄', icon:'🧹',
+  intro:'服務不是做完就算，要說得出來。',
+  steps:['參與一次社區或團內服務（最少 2 小時）','記錄：服務對象、你做了甚麼、遇到甚麼困難','請領袖核對後按「完成」'],
+  tip:'服務的價值，在於你記得服務對象的臉。',
+  alts:[['服務時數記錄','記錄','累積服務時數表，可匯出'],['社區服務提案','提案','寫一份一頁的服務計劃書']] },
+
+'crest-3': { type:'quiz', title:'照顧自己（健康）', icon:'💪',
+  intro:'身體是自己的，要懂得照顧。',
+  qs:[
+    { q:'連續幾天睡不夠，最有效的做法是？', opts:['週末一次補眠 12 小時','每天提早 30 分鐘上床','飲能量飲品','飲濃咖啡'], a:1,
+      why:'規律地補回睡眠，比一次補眠有效。' },
+    { q:'運動後大量出汗，最好飲？', opts:['清水','濃咖啡','汽水','酒精飲品'], a:0, why:'清水已足夠；含糖或刺激飲品反而更缺水。' },
+    { q:'洗澡時發現小腿有輕微擦傷。', opts:['沖洗乾淨、保持乾爽','用泥蓋住','完全不理','用力擦掉'], a:0, why:'清潔是最重要的第一步。' },
+    { q:'練習中途感到頭暈。', opts:['繼續完成練習','立即停下、坐下休息並告訴領袖','飲大量凍水','閉氣撐住'], a:1,
+      why:'頭暈是身體的警號，必須停下並通知大人。' } ],
+  alts:[['營養餐盤分類','分類','把食物分到均衡餐盤的五格'],['受傷自評','選擇','判斷傷勢並選正確處理']] },
+
+'crest-4': { type:'quiz', title:'生態偵探', icon:'🦋',
+  intro:'科學與大自然（高級）：再深入一點。',
+  qs:[
+    { q:'為甚麼山火對泥土的傷害比燒掉的草更嚴重？', opts:['因為泥土會變黑','因為表層有機質被燒毀，造成水土流失','因為草會再長','因為昆蟲會死'], a:1,
+      why:'失去植被保護，雨水直接沖刷泥土，要很多年才恢復。' },
+    { q:'雀鳥在冬天遷徙，主要是為了？', opts:['尋找食物和較暖的氣候','鍛鍊飛行','避開同伴','生蛋'], a:0, why:'食物減少與低溫是主因。' },
+    { q:'在食物鏈中，「分解者」的作用是？', opts:['製造陽光','把枯枝落葉分解成養分','吃其他動物','製造氧氣'], a:1,
+      why:'真菌與細菌把養分還給泥土，循環才成立。' } ],
+  alts:[['水土流失模擬','實驗','用泥和草皮做對照實驗並記錄'],['生物觀察記錄','記錄','連續一週記錄同一棵樹的變化']] },
+
+'crest-5': { type:'action', title:'創作任務', icon:'🖌️',
+  intro:'為你的小隊留下一些東西。',
+  steps:['設計小隊旗、小隊歌或一個營火表演','向小隊介紹並收集意見，再改一次','請領袖核對後按「完成」'],
+  tip:'第一版不完美是正常的，肯改才叫創作。',
+  alts:[['小隊旗設計','設計','畫出小隊旗並說明每個符號的意思'],['營火表演編排','編排','排出 5 分鐘表演流程']] },
+
+'crest-6': { type:'action', title:'社區行動', icon:'📢',
+  intro:'不只是認識社區，而是為社區做一件事。',
+  steps:['找出社區一個真實問題（噪音、垃圾、長者沒有人陪）','提出一個你能力做到的解決方法並實行','請領袖核對後按「完成」'],
+  tip:'童軍的方法是：看見問題，然後動手。',
+  alts:[['社區訪問任務','訪問','訪問三位街坊，記錄他們的需要'],['設施不足調查','調查','記錄區內最缺的三種設施']] },
+
+'crest-7': { type:'match', title:'節日與習俗', icon:'🎊',
+  intro:'文化藏在節日裡。',
+  pairs:[['中秋節','賞月、食月餅'],['端午節','扒龍舟、食糉'],['農曆新年','派利是、貼揮春'],
+         ['重陽節','登高、祭祖'],['清明節','掃墓、踏青']],
+  tip:'同一個節日，不同地區有不同過法——這就叫文化。',
+  alts:[['非物質文化遺產配對','配對','舞火龍、紮作、粵劇 ↔ 名稱'],['國歌與升旗禮儀','情境','甚麼場合會奏唱國歌']] },
+
+'crest-8': { type:'sort', title:'遵守還是不遵守', icon:'⚜️',
+  intro:'有些行為，一眼就分得出。',
+  buckets:['符合幼童軍規律','不符合'],
+  items:[{t:'準時出席集會',b:0,why:'值得信任，由守時開始。'},
+         {t:'主動幫同伴收拾',b:0,why:'有用、友愛。'},
+         {t:'借東西不還',b:1,why:'破壞信任。'},
+         {t:'取笑別人的缺點',b:1,why:'不友愛，也傷人。'},
+         {t:'即使對自己不利也說真話',b:0,why:'誠實是最難的一條。'},
+         {t:'隨手拋垃圾',b:1,why:'不愛護環境。'}],
+  tip:'規律不是用來背的，是用來做的。',
+  alts:[['規律辯論卡','討論','抽卡辯論，訓練思考'],['我的一週反思','日記','一週一件做得好、一件要改']] },
+
+'crest-9': { type:'action', title:'童軍家庭章（第四段）', icon:'🏘️',
+  intro:'最高一段：由你帶動整個家庭。',
+  steps:['策劃一個對家人有長遠影響的行動（減少浪費、家庭運動日）','持續至少兩星期並記錄變化','請家長核對後按「完成」'],
+  tip:'能改變身邊的人，就已經是領袖。',
+  alts:[['家庭傳承訪問','訪問','記錄祖父母或父母的一項專長'],['家人專長教學','教學','請家人教你一件家傳技能並示範']] },
+
+/* ---------------- 金紫荊獎章 ---------------- */
+'bauhinia-0': { type:'action', title:'戶外挑戰', icon:'🏔️',
+  intro:'金紫荊不是課室裡考回來的。',
+  steps:['完成一次有挑戰性的戶外活動（長途遠足、露營、水上活動）','記錄路線、時間、天氣與你克服的困難','由領袖評核後按「完成」'],
+  tip:'把難的那一次記下來，會成為你一輩子的底氣。',
+  alts:[['三日歷程記錄','記錄','連續三日戶外活動日誌'],['戶外技能認證','認證','由領袖逐項簽核你的技能']] },
+
+'bauhinia-1': { type:'action', title:'歷險挑戰', icon:'🧗',
+  intro:'故意選一件你會害怕的事。',
+  steps:['自選一項從未嘗試、有真實風險的歷險活動','事前寫下風險評估與安全措施','完成後寫下你的感受與學到的事','由領袖評核後按「完成」'],
+  tip:'歷險不是魯莽；有準備的冒險才叫歷險。',
+  alts:[['挑戰階梯','自選','由易到難三級，自己選挑戰到第幾級'],['失敗重試日誌','日誌','記錄失敗與重試的過程']] },
+
+'bauhinia-2': { type:'action', title:'分享經驗', icon:'🎤',
+  intro:'學到的東西，說得出來才算真正學懂。',
+  steps:['向小隊或全團分享一次你的歷險經歷（3–5 分鐘）','要有開始、過程、學到甚麼三段結構','回答同伴三條問題','由領袖評核後按「完成」'],
+  tip:'會分享的人，會學得快一倍。',
+  alts:[['小型分享會主持','主持','自己主持一次分享會'],['經驗卡上載','記錄','把經歷寫成一張卡片留給下一屆']] },
+
+'bauhinia-3': { type:'quiz', title:'小隊領導', icon:'👑',
+  intro:'最後一關：如果由你帶隊，你會怎樣做？',
+  qs:[
+    { q:'小隊要分工準備營火晚會。', opts:['自己一個人做完最快','按各人擅長分派，並說明期望','抽籤決定','叫最聽話的人做'], a:1,
+      why:'好的分工讓每個人都貢獻到，而不只是完成任務。' },
+    { q:'兩位隊員吵架，互不相讓。', opts:['立即責罵兩人','分開他們，聽雙方說法再一起定解決方法','完全不理','叫其他人評理'], a:1,
+      why:'先處理情緒，再處理事實，最後一起找方案。' },
+    { q:'你計劃的活動失敗了。', opts:['隱瞞不提','公開承認，並說出下次怎樣改','怪隊員','以後不再計劃'], a:1,
+      why:'領袖的可信度，來自承擔。' },
+    { q:'一位隊員做得特別好。', opts:['不說甚麼，免得他驕傲','具體讚賞他做了甚麼','只讚自己帶領有功','用獎品代替肯定'], a:1,
+      why:'具體的讚賞，才會讓他知道甚麼值得重複。' } ],
+  alts:[['分派任務模擬','模擬','給出六個任務，考你怎樣分配給六種性格的人'],['衝突處理','情境','三條衝突片段，選出你的處理方法']] }
+};
+
+/* 未填遊戲的項目自動 fallback 成實作任務 */
+function gameOf(stageId, idx, itemName){
+  const key = stageId + '-' + idx;
+  if(GAMES[key]) return Object.assign({ key }, GAMES[key]);
+  return { key, type:'action', title:itemName, icon:'🧭',
+    intro:'這一項要在真實活動中完成，由領袖考核。',
+    steps:['在團集會或戶外活動中完成「' + itemName + '」的訓練內容','請領袖即場指導並確認你已掌握','完成後按「完成」，記錄在進度內'],
+    tip:'童軍訓練從來不是坐在課室裡完成的。', alts:[] };
+}
+
+const TYPE_LABEL = { quiz:'選擇題挑戰', match:'配對連連看', order:'順序重組', memory:'記憶翻牌',
+  sort:'分類挑戰', find:'限時搵嘢', simon:'動作記憶', action:'實作任務（領袖／家長核對）' };
+const TYPE_ICON = { quiz:'❓', match:'🔗', order:'📜', memory:'🧠', sort:'🗂️', find:'🔍', simon:'🤸', action:'🧭' };
+
+</script>
+<script>
+/* =========================================================
+   C. 工具
+   ========================================================= */
+const $ = id => document.getElementById(id);
+const shuffle = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(v => v[1]);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+
+function toast(msg){
+  const t = $('toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), 1900);
+}
+let AC = null;
+function beep(type){
+  try{
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    const o = AC.createOscillator(), g = AC.createGain();
+    o.connect(g); g.connect(AC.destination);
+    const n = AC.currentTime;
+    if(type === 'ok'){ o.frequency.setValueAtTime(660, n); o.frequency.setValueAtTime(990, n + .08); }
+    else if(type === 'no'){ o.frequency.setValueAtTime(220, n); o.frequency.setValueAtTime(160, n + .09); }
+    else if(type === 'tick'){ o.frequency.setValueAtTime(440, n); }
+    else { o.frequency.setValueAtTime(520, n); o.frequency.setValueAtTime(780, n + .07); o.frequency.setValueAtTime(1040, n + .15); }
+    g.gain.setValueAtTime(.055, n);
+    g.gain.exponentialRampToValueAtTime(.001, n + .3);
+    o.start(n); o.stop(n + .32);
+  }catch(e){}
+}
+
+/* =========================================================
+   D. State
+   ========================================================= */
+const KEY = 'cubgame_v3';
+const todayKey = (d = new Date()) => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+const dayDiff = (a, b) => Math.round((new Date(b + 'T00:00:00') - new Date(a + 'T00:00:00')) / 86400000);
+
+function defaultState(){
+  return { name:'小狼', group:'', avatar:'🐺', passed:{}, badges:{}, bonus:0, streak:0,
+    lastActive:null, daily:{ date:todayKey(), done:[] }, card:null, drawnOn:null };
+}
+let S = load();
+function load(){
+  try{ const raw = localStorage.getItem(KEY); return raw ? Object.assign(defaultState(), JSON.parse(raw)) : defaultState(); }
+  catch(e){ return defaultState(); }
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+
+/* =========================================================
+   E. 衍生數據
+   ========================================================= */
+function badgeXP(b){ const lv = S.badges[b.id] || 0; return lv ? (BADGE_XP[b.tiers][lv-1] || 0) : 0; }
+function totalXP(){
+  let x = Object.keys(S.passed).filter(k => S.passed[k]).length * XP_QUEST;
+  BADGES.forEach(b => x += badgeXP(b));
+  return x + (S.bonus || 0);
+}
+function rankOf(xp){
+  let r = RANKS[0], next = null;
+  for(const R of RANKS){ if(xp >= R.xp) r = R; else { next = R; break; } }
+  return { rank:r, next };
+}
+function stageKeys(st){ return st.items.map((_, i) => st.id + '-' + i); }
+function stageDone(st){ return stageKeys(st).filter(k => S.passed[k]).length; }
+function stageComplete(st){ return stageDone(st) === st.items.length; }
+function touchStreak(){
+  const tk = todayKey();
+  if(S.lastActive === tk) return;
+  S.streak = (S.lastActive && dayDiff(S.lastActive, tk) === 1) ? (S.streak || 0) + 1 : 1;
+  S.lastActive = tk;
+}
+function checkLevelUp(before){
+  const n = totalXP();
+  if(rankOf(n).rank.name !== rankOf(before).rank.name)
+    setTimeout(() => toast('🎉 升級！你已成為「' + rankOf(n).rank.name + '」'), 600);
+}
+
+/* =========================================================
+   F. 主畫面
+   ========================================================= */
+let openStage = null;
+
+function renderHero(){
+  const xp = totalXP(), { rank, next } = rankOf(xp);
+  $('avatar').textContent = S.avatar;
+  $('hName').textContent = S.name || '小狼';
+  $('hRank').textContent = rank.name;
+  $('hSub').textContent = (S.group ? S.group + ' · ' : '') + '幼童軍 · 金紫荊之路';
+  $('xpNow').textContent = xp.toLocaleString() + ' XP';
+  if(next){
+    $('xpNext').textContent = '下一級：' + next.xp.toLocaleString() + ' XP';
+    $('xpFill').style.width = Math.max(3, Math.min(100, (xp - rank.xp) / (next.xp - rank.xp) * 100)) + '%';
+  }else{ $('xpNext').textContent = '最高等級已達成 🏆'; $('xpFill').style.width = '100%'; }
+  $('sBadge').textContent = BADGES.filter(b => S.badges[b.id] > 0).length;
+  $('sQuest').textContent = Object.keys(S.passed).filter(k => S.passed[k]).length + '/35';
+  $('sStage').textContent = STAGES.filter(stageComplete).length + '/' + STAGES.length;
+}
+
+function renderStages(){
+  $('stageList').innerHTML = STAGES.map((st, i) => {
+    const done = stageDone(st), total = st.items.length, complete = done === total;
+    const isOpen = openStage === st.id || (openStage === null && !complete);
+    const rows = st.items.map((name, j) => {
+      const g = gameOf(st.id, j, name);
+      const passed = !!S.passed[g.key];
+      return `<div class="q-row ${passed ? 'passed' : ''}" data-quest="${g.key}">
+        <div class="q-ic">${passed ? '✓' : (g.icon || '🎯')}</div>
+        <div class="q-meta">
+          <div class="q-name">${name}</div>
+          <div class="q-type">${TYPE_ICON[g.type]} ${g.title !== name ? g.title + ' · ' : ''}${TYPE_LABEL[g.type]}</div>
+        </div>
+        <div class="q-go">${passed ? '已通關' : '挑戰 ▸'}</div>
+      </div>`;
+    }).join('');
+    return `<div class="stage">
+      <div class="rail">
+        <div class="node ${complete ? 'done' : 'open'}">${st.emoji}</div>
+        ${i < STAGES.length-1 ? `<div class="connector ${complete ? 'solid' : ''}"></div>` : ''}
+      </div>
+      <div class="stage-body">
+        <div class="stage-title">${st.name}<span class="tag ${complete ? 'done' : 'now'}">${complete ? '已完成 ✅' : done + '/' + total}</span></div>
+        <div class="stage-req">${st.req}</div>
+        <div class="prog"><i style="width:${done/total*100}%"></i></div>
+        <button class="btn ghost small" data-toggle="${st.id}" style="margin-top:9px">${isOpen ? '▾ 收起關卡' : '▸ 查看 ' + total + ' 關'}</button>
+        <div class="items ${isOpen ? 'open' : ''}">${rows}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderCatalog(){
+  $('catalogList').innerHTML = STAGES.map(st => {
+    const rows = st.items.map((name, j) => {
+      const g = gameOf(st.id, j, name);
+      const alts = (g.alts || []).map(a => `<span class="alt-chip">${a[0]}<i>${a[1]}</i></span>`).join('');
+      return `<div class="cat">
+        <div class="cat-top"><span class="cat-dot" style="background:${S.passed[g.key] ? '#2E8B57' : '#D9D2BC'}"></span>
+          <span class="cat-name">${name}</span></div>
+        <div class="cat-main">★ 現正可玩：<b>${g.icon} ${g.title}</b> · ${TYPE_LABEL[g.type]}</div>
+        ${alts ? `<div class="cat-alts">${alts}</div>` : ''}
+      </div>`;
+    }).join('');
+    return `<div class="group-label">${st.emoji} ${st.name}</div><div class="cat-list">${rows}</div>`;
+  }).join('');
+}
+
+function renderBadges(){
+  const groups = ['戶外','技能','服務','興趣'];
+  $('badgeCount').textContent = BADGES.filter(b => S.badges[b.id] > 0).length + '/' + BADGES.length;
+  $('badgeGrid').innerHTML = groups.map(g => {
+    const list = BADGES.filter(b => b.group === g);
+    return `<div class="group-label">${g} · ${list.length} 款</div><div class="grid">${list.map(b => {
+      const lv = S.badges[b.id] || 0;
+      return `<button class="bg" data-badge="${b.id}">
+        <div class="ring ${lv ? 'l'+lv : ''}">${b.emoji}${lv ? `<span class="lv">${b.tiers===1?'✓':['Ⅰ','Ⅱ','Ⅲ'][lv-1]}</span>` : ''}</div>
+        <div class="bg-name ${lv ? 'on' : ''}">${b.name}</div></button>`;
+    }).join('')}</div>`;
+  }).join('');
+}
+
+function renderDaily(){
+  const n = S.daily.done.length;
+  $('streakTitle').textContent = '連續 ' + (S.streak || 0) + ' 日';
+  $('streakHint').textContent = n ? '今日已完成 ' + n + ' 項，繼續保持這份動能 💪' : '今日完成任何一關，即可保住連續紀錄。';
+  const today = MISSIONS.slice(0, 4);
+  $('missionList').innerHTML = today.map((m, i) => {
+    const on = S.daily.done.includes(i);
+    return `<div class="item ${on ? 'on' : ''}" data-mission="${i}"><div class="box">${on?'✓':''}</div>
+      <span>${m}</span><span class="xp">+${XP_MISSION}</span></div>`;
+  }).join('');
+  if(S.card && S.drawnOn === todayKey()){
+    $('cardTag').textContent = S.card.tag; $('cardText').textContent = S.card.text;
+    $('cardWho').textContent = '— ' + S.card.who;
+    $('drawCard').disabled = true; $('drawCard').textContent = '今日已抽（明日再來）';
+  }else{
+    $('cardTag').textContent = '森林故事'; $('cardText').textContent = '準備好就抽一張。';
+    $('cardWho').textContent = '';
+    $('drawCard').disabled = false; $('drawCard').textContent = '抽一張卡';
+  }
+}
+
+function renderMe(){
+  $('inName').value = S.name || ''; $('inGroup').value = S.group || '';
+  $('avatarRow').innerHTML = AVATARS.map(a =>
+    `<button class="lv-btn ${S.avatar===a?'on':''}" data-av="${a}" style="width:50px;padding:6px 0"><b style="font-size:18px">${a}</b></button>`).join('');
+}
+
+function renderAll(){ renderHero(); renderStages(); renderCatalog(); renderBadges(); renderDaily(); renderMe(); }
+
+/* =========================================================
+   G. 關卡引擎
+   ========================================================= */
+let Q = null;
+
+function clearQuestTimers(){
+  if(Q && Q.timers){ Q.timers.forEach(t => clearTimeout(t)); Q.timers = []; }
+  if(Q && Q.timer){ clearInterval(Q.timer); Q.timer = null; }
+}
+
+function openQuest(key){
+  const parts = key.split('-'), sid = parts[0], idx = +parts[1];
+  const st = STAGES.find(s => s.id === sid); if(!st) return;
+  const g = gameOf(sid, idx, st.items[idx]);
+  if(Q) clearQuestTimers();
+  Q = { key, g, mistakes:0, done:false, timers:[] };
+
+  if(g.type === 'quiz'){ Q.qi = 0; Q.picked = null; }
+  if(g.type === 'match'){
+    Q.left = shuffle(g.pairs.map((p, i) => ({ t:p[0], i })));
+    Q.right = shuffle(g.pairs.map((p, i) => ({ t:p[1], i })));
+    Q.selL = null; Q.matched = [];
+  }
+  if(g.type === 'order'){ Q.pool = shuffle(g.items.slice()); Q.seq = []; }
+  if(g.type === 'memory'){
+    Q.deck = shuffle(g.pairs.concat(g.pairs).map((s, i) => ({ s, i: Math.floor(i/2) })));
+    Q.flip = []; Q.foundCards = []; Q.found = 0; Q.busy = false;
+  }
+  if(g.type === 'sort'){ Q.pool = shuffle(g.items.map((o, i) => Object.assign({ i }, o))); Q.cur = 0; Q.fb = null; }
+  if(g.type === 'find'){
+    const arr = [];
+    for(let i = 0; i < g.count; i++) arr.push(g.target);
+    for(let i = g.count; i < g.cells; i++) arr.push(g.decoys[Math.floor(Math.random() * g.decoys.length)]);
+    Q.grid = shuffle(arr); Q.hits = []; Q.missed = []; Q.timeLeft = g.time; Q.failed = false; Q.needTimer = true;
+  }
+  if(g.type === 'simon'){
+    Q.seq = [];
+    for(let i = 0; i < g.len; i++) Q.seq.push(g.symbols[Math.floor(Math.random() * g.symbols.length)]);
+    Q.showIdx = -1; Q.input = []; Q.phase = 'show'; Q.needPlay = true;
+  }
+
+  $('qTitle').textContent = (g.icon || '🎯') + ' ' + g.title;
+  $('qSub').textContent = st.name + ' · ' + (TYPE_LABEL[g.type] || '挑戰');
+  $('quest').classList.add('on');
+  document.body.style.overflow = 'hidden';
+  renderQuest();
+}
+
+function closeQuest(){
+  clearQuestTimers();
+  $('quest').classList.remove('on');
+  document.body.style.overflow = '';
+  Q = null;
+  renderAll();
+}
+
+function starsOf(){ return Q.mistakes === 0 ? '⭐⭐⭐' : (Q.mistakes <= 2 ? '⭐⭐' : '⭐'); }
+
+function altsNote(g){
+  if(!g.alts || !g.alts.length) return '';
+  return `<div class="alts-line"><div class="alts-t">🎲 這一項的其他玩法（揀啱就同我講，我幫你換）</div>` +
+    g.alts.map(a => `<span class="alt-chip">${a[0]}<i>${a[1]}</i></span>`).join('') + `</div>`;
+}
+
+function renderQuest(){
+  if(!Q) return;
+  const g = Q.g;
+  let out = [ '', '' ];
+  if(g.type === 'quiz') out = viewQuiz();
+  else if(g.type === 'match') out = viewMatch();
+  else if(g.type === 'order') out = viewOrder();
+  else if(g.type === 'memory') out = viewMemory();
+  else if(g.type === 'sort') out = viewSort();
+  else if(g.type === 'find') out = viewFind();
+  else if(g.type === 'simon') out = viewSimon();
+  else out = viewAction();
+
+  $('qBody').innerHTML = out[0] + ((Q.done || Q.failed) ? '' : altsNote(g));
+  $('qFoot').innerHTML = out[1];
+  $('qScore').textContent = Q.failed ? '⏱️' : starsOf();
+
+  if(Q.needTimer){ Q.needTimer = false; startFindTimer(); }
+  if(Q.needPlay){ Q.needPlay = false; simonPlay(); }
+  if(g.type === 'match' && Q.matched.length === g.pairs.length && !Q.done) finishQuest();
+  if(g.type === 'find' && Q.hits.length === g.count && !Q.done) finishQuest();
+}
+
+/* ---------- QUIZ ---------- */
+function viewQuiz(){
+  const g = Q.g, q = g.qs[Q.qi];
+  const body = `<div class="q-step">第 ${Q.qi+1} / ${g.qs.length} 題</div>
+    <p class="q-q">${q.q}</p>
+    <div class="${q.flags ? 'flag-grid' : ''}">
+      ${q.flags
+        ? q.flags.map((f, i) => `<button class="opt opt-flag ${Q.picked!==null ? (i===q.a?'ok':(Q.picked===i?'no':'dim')) : ''}" data-pick="${i}">${f}</button>`).join('')
+        : q.opts.map((o, i) => `<button class="opt ${Q.picked!==null ? (i===q.a?'ok':(Q.picked===i?'no':'dim')) : ''}" data-pick="${i}">
+            <span style="flex:0 0 22px;font-weight:800;color:var(--ink-2)">${'ABCD'[i]}</span><span>${o}</span></button>`).join('')}
+    </div>
+    ${Q.picked !== null ? `<div class="fb ${Q.picked===q.a?'ok':'no'}"><b>${Q.picked===q.a?'正確！':'再看一次'}</b>${q.why}</div>` : ''}`;
+  const foot = Q.picked === null ? '' :
+    `<button class="btn" data-act="next">${Q.qi === g.qs.length-1 ? '完成挑戰 🎉' : '下一題'}</button>`;
+  return [body, foot];
+}
+
+/* ---------- MATCH ---------- */
+function viewMatch(){
+  const g = Q.g;
+  const body = `<p class="q-intro">${g.intro}</p>
+    <div class="match-cols">
+      <div class="m-col">${Q.left.map(o => `<button class="m-card ${Q.matched.includes(o.i)?'done':''} ${Q.selL===o.i?'sel':''}" data-side="l" data-i="${o.i}">${o.t}</button>`).join('')}</div>
+      <div class="m-col">${Q.right.map(o => `<button class="m-card ${Q.matched.includes(o.i)?'done':''}" data-side="r" data-i="${o.i}">${o.t}</button>`).join('')}</div>
+    </div>
+    <p class="src">${Q.matched.length} / ${g.pairs.length} 對已連線</p>`;
+  return [body, ''];
+}
+
+/* ---------- ORDER ---------- */
+function viewOrder(){
+  const g = Q.g;
+  const remain = Q.pool.filter(t => !Q.seq.includes(t));
+  const ok = Q.seq.length === g.correct.length && Q.seq.every((v, i) => v === g.correct[i]);
+  const body = `<p class="q-intro">${g.intro}</p>
+    <div class="ord-list">${g.correct.map((_, i) => {
+      const v = Q.seq[i];
+      return `<div class="ord-slot ${v ? 'filled' : ''}">${v
+        ? `<span class="n">${i+1}</span>${v}`
+        : `<span class="n" style="background:#EFEDE4;color:#9A9689">${i+1}</span><span style="color:#9A9689">點下面選出這一步</span>`}</div>`;
+    }).join('')}</div>
+    <div class="q-step" style="margin:18px 0 8px">可選項目</div>
+    <div class="ord-pool">${remain.map(t => `<button class="ord-item" data-ord="${encodeURIComponent(t)}">${t}</button>`).join('')}</div>
+    ${ok ? `<div class="fb ok" style="margin-top:14px"><b>次序完全正確！</b>${g.tip||''}</div>` : ''}`;
+  const foot = ok ? `<button class="btn" data-act="finish">完成挑戰 🎉</button>` : '';
+  return [body, foot];
+}
+
+/* ---------- MEMORY ---------- */
+function viewMemory(){
+  const g = Q.g;
+  const body = `<p class="q-intro">${g.intro}</p>
+    <div class="mem-grid">${Q.deck.map((c, i) => {
+      const shown = Q.flip.includes(i) || Q.foundCards.includes(i);
+      return `<button class="mem ${shown?'flip':''} ${Q.foundCards.includes(i)?'done':''}" data-mem="${i}">${c.s}</button>`;
+    }).join('')}</div>
+    <p class="src">已找到 ${Q.found} / ${g.pairs.length} 對${g.tip ? ' · 💡 ' + g.tip : ''}</p>`;
+  return [body, ''];
+}
+
+/* ---------- SORT ---------- */
+function viewSort(){
+  const g = Q.g;
+  if(Q.cur >= Q.pool.length) return ['', ''];
+  const it = Q.pool[Q.cur];
+  const body = `<p class="q-intro">${g.intro}</p>
+    <div class="q-step">第 ${Q.cur+1} / ${Q.pool.length} 件</div>
+    <div class="sort-item">${it.t}</div>
+    <div class="sort-buckets">${g.buckets.map((b, i) =>
+      `<button class="bucket" data-bucket="${i}">${b}</button>`).join('')}</div>
+    ${Q.fb ? `<div class="fb ${Q.fb.ok?'ok':'no'}"><b>${Q.fb.ok?'放對了':'放錯了'}</b>${Q.fb.why}</div>` : ''}`;
+  return [body, ''];
+}
+
+/* ---------- FIND ---------- */
+function viewFind(){
+  const g = Q.g;
+  if(Q.failed){
+    return [`<div class="result"><div class="big">⏱️</div><h3>時間到！</h3>
+      <p>只找到 ${Q.hits.length} / ${g.count} 個${g.target}</p>
+      <p style="font-size:12.5px">再試一次，先掃視全個畫面再開始點。</p></div>`,
+      `<button class="btn" data-act="retry">再試一次</button>`];
+  }
+  const body = `<div class="find-head"><span>找出 ${g.count} 個 ${g.target}</span>
+      <span class="find-timer" id="findTimer">${Q.timeLeft}s</span></div>
+    <p class="q-intro" style="margin:0 0 12px">${g.intro}</p>
+    <div class="find-grid" style="grid-template-columns:repeat(${Math.min(5, Math.ceil(Math.sqrt(g.cells)))} ,1fr)">
+      ${Q.grid.map((c, i) => {
+        const hit = Q.hits.includes(i), miss = Q.missed.includes(i);
+        return `<button class="find-cell ${hit?'hit':''} ${miss?'miss':''}" data-find="${i}">${(hit||miss) ? (hit?c:'✗') : c}</button>`;
+      }).join('')}
+    </div>
+    <p class="src">已找到 ${Q.hits.length} / ${g.count}${g.tip ? ' · 💡 ' + g.tip : ''}</p>`;
+  return [body, ''];
+}
+
+function startFindTimer(){
+  const tick = () => {
+    if(!Q) return;
+    Q.timeLeft--;
+    const el = $('findTimer');
+    if(el) el.textContent = Q.timeLeft + 's';
+    if(Q.timeLeft <= 0){ clearQuestTimers(); Q.failed = true; beep('no'); renderQuest(); }
+  };
+  Q.timer = setInterval(tick, 1000);
+}
+
+/* ---------- SIMON ---------- */
+function viewSimon(){
+  const g = Q.g;
+  const body = `<p class="q-intro">${g.intro}</p>
+    <div class="simon-status">${Q.phase === 'show'
+      ? '👀 看好：留意閃動的次序'
+      : `✋ 到你：按次序重複（${Q.input.length}/${Q.seq.length}）`}</div>
+    <div class="simon-grid">${g.symbols.map(s => {
+      const hi = Q.phase === 'show' && Q.seq[Q.showIdx] === s && Q.showIdx >= 0;
+      return `<button class="simon-cell ${hi?'hi':''}" data-simon="${encodeURIComponent(s)}">${s}</button>`;
+    }).join('')}</div>
+    <p class="src">${Q.phase === 'show' ? ' ' : '按錯會重新播放整組動作。'}${g.tip ? ' 💡 ' + g.tip : ''}</p>`;
+  return [body, ''];
+}
+
+function simonPlay(){
+  const g = Q.g;
+  Q.phase = 'show'; Q.input = []; Q.showIdx = -1;
+  renderQuest();
+  let t = 650;
+  Q.seq.forEach((s, i) => {
+    Q.timers.push(setTimeout(() => { if(!Q) return; Q.showIdx = i; beep('tick'); renderQuest(); }, t));
+    t += 720;
+  });
+  Q.timers.push(setTimeout(() => { if(!Q) return; Q.showIdx = -1; Q.phase = 'input'; renderQuest(); }, t));
+}
+
+/* ---------- ACTION ---------- */
+function viewAction(){
+  const g = Q.g;
+  const body = `<p class="q-intro">${g.intro}</p>
+    <div class="action-box">
+      <div class="q-step" style="margin:0 0 4px">任務步驟</div>
+      <ol>${g.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+      ${g.tip ? `<div style="margin-top:12px;font-size:12.5px;color:var(--ink-2);border-top:1px dashed var(--line);padding-top:10px">💡 ${g.tip}</div>` : ''}
+    </div>`;
+  const foot = `<button class="btn" data-act="finish">✅ 已完成（領袖／家長核對）</button>`;
+  return [body, foot];
+}
+
+/* ---------- 通關 ---------- */
+function finishQuest(){
+  if(!Q) return;
+  const g = Q.g, xpBefore = totalXP();
+  const first = !S.passed[Q.key];
+  S.passed[Q.key] = true;
+  if(first) touchStreak();
+  if(!first) S.bonus += 10;
+  save(); beep('win'); clearQuestTimers();
+
+  const stars = starsOf();
+  $('qBody').innerHTML = `<div class="result">
+      <div class="big">🏅</div><h3>${first ? '關卡通過！' : '再挑戰成功！'}</h3>
+      <p>${g.title}</p>
+      <div class="reward">+${first ? XP_QUEST : 10} XP · ${stars}</div>
+      <p style="margin-top:14px;font-size:12.5px">${Q.mistakes === 0 ? '沒有一次答錯，非常專注！' : '錯過 ' + Q.mistakes + ' 次，再玩一次挑戰三星。'}</p>
+      ${g.tip ? `<p style="font-size:12.5px;margin-top:10px;color:var(--ink-2)">💡 ${g.tip}</p>` : ''}
+      ${altsNote(g)}
+    </div>`;
+  $('qFoot').innerHTML = `<div class="row" style="flex-wrap:nowrap">
+      <button class="btn ghost" data-act="retry" style="flex:1 1 45%">再玩一次</button>
+      <button class="btn" data-act="close" style="flex:1 1 55%">返回地圖</button></div>`;
+  $('qScore').textContent = stars;
+  Q.done = true;
+  renderHero(); checkLevelUp(xpBefore);
+}
+
+/* =========================================================
+   H. 事件
+   ========================================================= */
+document.addEventListener('click', e => {
+  const qr = e.target.closest('[data-quest]');
+  if(qr){ openQuest(qr.dataset.quest); return; }
+
+  const tg = e.target.closest('[data-toggle]');
+  if(tg){ openStage = (openStage === tg.dataset.toggle) ? '' : tg.dataset.toggle; renderStages(); return; }
+
+  const bd = e.target.closest('[data-badge]');
+  if(bd){ openBadgeModal(bd.dataset.badge); return; }
+
+  const ms = e.target.closest('[data-mission]');
+  if(ms){
+    const i = +ms.dataset.mission, before = totalXP();
+    if(S.daily.done.includes(i)){ S.daily.done = S.daily.done.filter(x => x !== i); S.bonus = Math.max(0, S.bonus - XP_MISSION); }
+    else { S.daily.done.push(i); S.bonus += XP_MISSION; touchStreak(); toast('+' + XP_MISSION + ' XP · 連續 ' + S.streak + ' 日 🔥'); }
+    save(); renderHero(); renderDaily(); checkLevelUp(before); return;
+  }
+
+  const av = e.target.closest('[data-av]');
+  if(av){ S.avatar = av.dataset.av; save(); renderMe(); renderHero(); return; }
+
+  const tab = e.target.closest('.tab');
+  if(tab){
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t === tab));
+    ['path','catalog','badges','daily','me'].forEach(v => $('view-' + v).classList.toggle('hidden', v !== tab.dataset.tab));
+    window.scrollTo({ top:0, behavior:'smooth' });
+    return;
+  }
+});
+
+$('qBody').addEventListener('click', e => {
+  if(!Q || Q.done) return;
+  const g = Q.g;
+
+  /* quiz */
+  const pick = e.target.closest('[data-pick]');
+  if(pick && g.type === 'quiz'){
+    if(Q.picked !== null) return;
+    const i = +pick.dataset.pick;
+    Q.picked = i;
+    if(i !== g.qs[Q.qi].a){ Q.mistakes++; beep('no'); } else beep('ok');
+    renderQuest(); return;
+  }
+
+  /* match */
+  const mc = e.target.closest('.m-card');
+  if(mc && g.type === 'match'){
+    const side = mc.dataset.side, i = +mc.dataset.i;
+    if(side === 'l'){ Q.selL = (Q.selL === i) ? null : i; renderQuest(); return; }
+    if(Q.selL === null) return;
+    if(Q.selL === i){ Q.matched.push(i); Q.selL = null; beep('ok'); renderQuest(); return; }
+    Q.mistakes++; beep('no'); Q.selL = null; renderQuest();
+    const el = document.querySelector('.m-card[data-side="r"][data-i="' + i + '"]');
+    if(el){ el.classList.add('shake'); setTimeout(() => el.classList.remove('shake'), 350); }
+    return;
+  }
+
+  /* order */
+  const oi = e.target.closest('[data-ord]');
+  if(oi && g.type === 'order'){
+    const t = decodeURIComponent(oi.dataset.ord);
+    if(t === g.correct[Q.seq.length]){ Q.seq.push(t); beep('ok'); renderQuest(); return; }
+    Q.mistakes++; beep('no'); renderQuest();
+    const el = document.querySelector('[data-ord="' + encodeURIComponent(t) + '"]');
+    if(el){ el.classList.add('shake'); setTimeout(() => el.classList.remove('shake'), 400); }
+    toast('不是這一步，再想想 🤔');
+    return;
+  }
+
+  /* memory */
+  const mm = e.target.closest('[data-mem]');
+  if(mm && g.type === 'memory'){ memClick(+mm.dataset.mem); return; }
+
+  /* sort */
+  const bk = e.target.closest('[data-bucket]');
+  if(bk && g.type === 'sort'){
+    const it = Q.pool[Q.cur], b = +bk.dataset.bucket;
+    if(it.b === b){ Q.fb = { ok:true, why:it.why || '' }; beep('ok'); Q.cur++; renderQuest(); }
+    else { Q.mistakes++; Q.fb = { ok:false, why:it.why || '' }; beep('no'); renderQuest(); }
+    if(Q.cur >= Q.pool.length) finishQuest();
+    return;
+  }
+
+  /* find */
+  const fc = e.target.closest('[data-find]');
+  if(fc && g.type === 'find'){
+    const i = +fc.dataset.find;
+    if(Q.hits.includes(i) || Q.missed.includes(i)) return;
+    if(Q.grid[i] === g.target){ Q.hits.push(i); beep('ok'); }
+    else { Q.missed.push(i); Q.mistakes++; beep('no'); }
+    renderQuest(); return;
+  }
+
+  /* simon */
+  const sc = e.target.closest('[data-simon]');
+  if(sc && g.type === 'simon'){
+    if(Q.phase !== 'input') return;
+    const s = decodeURIComponent(sc.dataset.simon);
+    Q.input.push(s);
+    const idx = Q.input.length - 1;
+    if(Q.seq[idx] !== s){ Q.mistakes++; beep('no'); renderQuest(); setTimeout(simonPlay, 420); return; }
+    beep('tick');
+    if(Q.input.length === Q.seq.length){ finishQuest(); return; }
+    renderQuest(); return;
+  }
+});
+
+function memClick(i){
+  if(Q.busy || Q.foundCards.includes(i) || Q.flip.includes(i)) return;
+  Q.flip.push(i); beep('tick'); renderQuest();
+  if(Q.flip.length === 2){
+    Q.busy = true;
+    const [a, b] = Q.flip;
+    if(Q.deck[a].i === Q.deck[b].i){
+      Q.foundCards.push(a, b); Q.found++; Q.flip = []; Q.busy = false;
+      beep('ok'); renderQuest();
+      if(Q.found === Q.g.pairs.length) setTimeout(finishQuest, 380);
+    }else{
+      Q.mistakes++;
+      setTimeout(() => { if(!Q) return; Q.flip = []; Q.busy = false; beep('no'); renderQuest(); }, 760);
+    }
+  }
+}
+
+$('qFoot').addEventListener('click', e => {
+  const b = e.target.closest('[data-act]');
+  if(!b || !Q) return;
+  const act = b.dataset.act;
+  if(act === 'close'){ closeQuest(); return; }
+  if(act === 'retry'){ const k = Q.key; closeQuest(); setTimeout(() => openQuest(k), 80); return; }
+  if(act === 'finish'){ finishQuest(); return; }
+  if(act === 'next'){
+    if(Q.qi === Q.g.qs.length - 1){ finishQuest(); return; }
+    Q.qi++; Q.picked = null; renderQuest(); $('qBody').scrollTop = 0; return;
+  }
+});
+
+$('qClose').addEventListener('click', () => {
+  if(Q && !Q.done && Q.g.type !== 'action'){
+    if(!confirm('離開會失去這次的進度，確定？')) return;
+  }
+  closeQuest();
+});
+
+/* 徽章 modal */
+let modalBadge = null;
+function openBadgeModal(id){
+  const b = BADGES.find(x => x.id === id);
+  modalBadge = b;
+  $('mTitle').textContent = b.emoji + ' ' + b.name;
+  $('mSub').textContent = b.group + '組 · ' + (b.tiers === 1 ? '一級制徽章' : '三級制徽章（紅初／黃中／綠高）');
+  const labels = b.tiers === 1 ? [['0','未取得'],['1','已取得']] : [['0','未取得'],['1','初級'],['2','中級'],['3','高級']];
+  $('mLevels').style.gridTemplateColumns = 'repeat(' + labels.length + ',1fr)';
+  $('mLevels').innerHTML = labels.map(([v, t]) =>
+    `<button class="lv-btn ${S.badges[b.id] === +v ? 'on' : ''}" data-lv="${v}"><b>${v === '0' ? '—' : (b.tiers === 1 ? '✓' : v)}</b><span>${t}</span></button>`).join('');
+  $('modalBg').classList.add('on');
+}
+$('mLevels').addEventListener('click', e => {
+  const b = e.target.closest('[data-lv]');
+  if(!b || !modalBadge) return;
+  const before = totalXP();
+  S.badges[modalBadge.id] = +b.dataset.lv;
+  save(); renderHero(); renderBadges(); checkLevelUp(before);
+  const gain = totalXP() - before;
+  if(gain > 0) toast('+' + gain + ' XP · ' + modalBadge.name);
+  openBadgeModal(modalBadge.id);
+});
+$('mClose').addEventListener('click', () => $('modalBg').classList.remove('on'));
+$('modalBg').addEventListener('click', e => { if(e.target === $('modalBg')) $('modalBg').classList.remove('on'); });
+
+/* 抽卡 */
+$('drawCard').addEventListener('click', () => {
+  const c = CARDS[Math.floor(Math.random() * CARDS.length)];
+  S.card = c; S.drawnOn = todayKey(); S.bonus += 15;
+  save(); renderHero(); renderDaily(); beep('win');
+  toast('+15 XP · 抽到「' + c.tag + '」');
+});
+
+/* 設定 */
+$('inName').addEventListener('input', e => { S.name = e.target.value; save(); renderHero(); });
+$('inGroup').addEventListener('input', e => { S.group = e.target.value; save(); renderHero(); });
+$('btnExport').addEventListener('click', () => {
+  $('exportBox').value = btoa(unescape(encodeURIComponent(JSON.stringify(S))));
+  $('exportBox').select(); toast('已產生進度碼，複製貼給團長');
+});
+$('btnImport').addEventListener('click', () => {
+  try{
+    S = Object.assign(defaultState(), JSON.parse(decodeURIComponent(escape(atob($('exportBox').value.trim())))));
+    save(); renderAll(); toast('進度已匯入 ✅');
+  }catch(err){ toast('進度碼格式不正確'); }
+});
+$('btnReset').addEventListener('click', () => {
+  if(confirm('確定清除所有進度？此動作無法復原。')){ S = defaultState(); save(); renderAll(); toast('已重置'); }
+});
+
+setInterval(() => {
+  if(S.daily.date !== todayKey()){ S.daily = { date:todayKey(), done:[] }; S.drawnOn = null; save(); renderDaily(); }
+}, 60000);
+
+renderAll();
+
+</script>
+</body>
+</html>

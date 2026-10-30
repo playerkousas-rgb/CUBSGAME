@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#12281E">
+<title>幼童軍歷險 · 35 關全部解鎖</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <div class="avatar" id="avatar">🐺</div>
+      <div style="flex:1 1 auto;min-width:0">
+        <div class="hero-name"><span id="hName">小狼</span><span class="pill" id="hRank">見習小狼</span></div>
+        <div class="hero-sub" id="hSub">幼童軍 · 金紫荊之路</div>
+      </div>
+    </div>
+    <div class="xpbar">
+      <div class="xpbar-labels"><span id="xpNow">0 XP</span><span id="xpNext">下一級：200 XP</span></div>
+      <div class="xpbar-track"><div class="xpbar-fill" id="xpFill" style="width:0%"></div></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="sBadge">0</b><span>活動徽章</span></div>
+      <div class="stat"><b id="sQuest">0/35</b><span>已過關</span></div>
+      <div class="stat"><b id="sStage">0/5</b><span>進度獎章</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="view-path">
+    <div class="card">
+      <div class="card-head"><div class="h2">🗺️ 歷險地圖 <small>全部 35 關已解鎖</small></div></div>
+      <div id="stageList"></div>
+      <p class="src">※ 項目依香港童軍總會《幼童軍訓練綱要》章節名稱整理；遊戲內容為示範設計，考核細則以官方綱要為準。</p>
+    </div>
+  </section>
+
+  <section id="view-catalog" class="hidden">
+    <div class="card">
+      <div class="card-head"><div class="h2">🎲 玩法總表 <small>每項 3 個玩法，★ 是現正可玩</small></div></div>
+      <p class="muted" style="margin-bottom:14px">每項都有 1 個可玩＋2 個備選。邊個玩法啱你，話我知我就換。</p>
+      <div id="catalogList"></div>
+    </div>
+  </section>
+
+  <section id="view-badges" class="hidden">
+    <div class="card">
+      <div class="card-head">
+        <div class="h2">🎖️ 活動徽章 <small>點徽章可設定級別</small></div>
+        <span class="pill" style="background:#EDF7F1;color:#1F6B4A;border-color:#BFE3CE" id="badgeCount">0</span>
+      </div>
+      <div id="badgeGrid"></div>
+      <p class="src">※ 紅=初級 / 黃=中級 / 綠=高級（三級制徽章）。示範 20 款，官方全套為 42 款共 56 個徽章。</p>
+    </div>
+  </section>
+
+  <section id="view-daily" class="hidden">
+    <div class="card">
+      <div class="checkin">
+        <div class="flame">🔥</div>
+        <div style="flex:1 1 auto">
+          <b id="streakTitle">連續 0 日</b>
+          <div class="muted" id="streakHint">今日完成任何一關，即可保住連續紀錄。</div>
+        </div>
+      </div>
+      <div class="card-head" style="margin-top:16px;margin-bottom:10px"><div class="h2">📋 今日任務 <small>+30 XP</small></div></div>
+      <div id="missionList" style="display:flex;flex-direction:column;gap:7px"></div>
+    </div>
+    <div class="card">
+      <div class="card-head" style="margin-bottom:10px"><div class="h2">🃏 今日激勵卡</div></div>
+      <div class="quote">
+        <div class="qtag" id="cardTag">森林故事</div>
+        <p id="cardText">準備好就抽一張。</p>
+        <div class="who" id="cardWho"></div>
+      </div>
+      <button class="btn gold" id="drawCard" style="width:100%;margin-top:12px">抽一張卡</button>
+    </div>
+  </section>
+
+  <section id="view-me" class="hidden">
+    <div class="card">
+      <div class="card-head"><div class="h2">👤 我的資料</div></div>
+      <div class="field"><label>名字 / 暱稱</label><input id="inName" placeholder="例如：陳小明" maxlength="12"></div>
+      <div class="field"><label>旅團</label><input id="inGroup" placeholder="例如：第 XX 旅 幼童軍團" maxlength="30"></div>
+      <div class="field"><label>頭像</label><div class="row" id="avatarRow"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="h2">📤 匯出 / 匯入 <small>貼給團長</small></div></div>
+      <textarea id="exportBox" spellcheck="false" placeholder="按「匯出」產生進度碼，貼給團長；或貼上進度碼後按「匯入」。"></textarea>
+      <div class="row" style="margin-top:10px">
+        <button class="btn small" id="btnExport">匯出進度碼</button>
+        <button class="btn small ghost" id="btnImport">匯入進度碼</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="h2">⚙️ 設定</div></div>
+      <button class="btn ghost" id="btnReset" style="width:100%;color:#B4453A;border-color:#F0C9C4">清除所有進度</button>
+      <p class="src">資料只存在這台裝置的瀏覽器，不會上傳。獎章制度資料來源：香港童軍總會幼童軍支部《幼童軍訓練綱要》。</p>
+    </div>
+  </section>
+</main>
+
+<nav>
+  <div class="nav-in">
+    <button class="tab on" data-tab="path"><span class="ic">🗺️</span>地圖</button>
+    <button class="tab" data-tab="catalog"><span class="ic">🎲</span>玩法</button>
+    <button class="tab" data-tab="badges"><span class="ic">🎖️</span>徽章</button>
+    <button class="tab" data-tab="daily"><span class="ic">🔥</span>每日</button>
+    <button class="tab" data-tab="me"><span class="ic">🐺</span>我</button>
+  </div>
+</nav>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h3 id="mTitle">徽章</h3>
+    <div class="sub" id="mSub"></div>
+    <div class="lv-row" id="mLevels"></div>
+    <button class="btn ghost" id="mClose" style="width:100%;margin-top:16px">關閉</button>
+  </div>
+</div>
+
+<div id="quest">
+  <div class="q-top">
+    <button class="q-close" id="qClose">✕</button>
+    <div class="q-head-t"><b id="qTitle">關卡</b><span id="qSub"></span></div>
+    <div class="q-hearts" id="qScore"></div>
+  </div>
+  <div class="q-body" id="qBody"></div>
+  <div class="q-foot" id="qFoot"></div>
+</div>
+
+<div id="toast"></div>
+
+<script src="js/data.js"></script>
+<script src="js/logic.js"></script>
+</body>
+</html>
