@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.4.1 — 修 Vercel STATIC_BUILD_NO_OUT_DIR
+- **Root cause**：Vercel 嘅 static builder 見到 `package.json` 有 `build` script 就會自動跑，
+  然後預設搵 `public/` 做 output directory；舊 `vercel.json` 只寫 `buildCommand: ""` 而冇 pin
+  output directory，部署舊 `main` 時更連 `vercel.json` 都未有
+- `build.js` 而家會組裝 `public/`：完整多檔站（index.html + css/js/icons + manifest + sw.js）
+  ＋單檔版放喺 `public/dist/`；`icon-source.png`（1.2 MB 主檔）唔上部署
+- `vercel.json` 明確 pin `buildCommand: "node build.js"` + `outputDirectory: "public"`，
+  覆蓋 import UI 預設，唔再依賴 static builder 嘅預設行為
+- `public/` 加入 `.gitignore`（純 build 產物）
+- `sw.js` CACHE bump 去 `cubgame-v0.4.1`
+
 ## v0.4.0 — PWA + Vercel 就緒 + 徽章對齊現行手冊
 - **PWA**：新增 `manifest.webmanifest`、`sw.js`（導航 network-first、資源 stale-while-revalidate）、
   全套 icon（192／512／maskable／apple-touch／favicon），可加到主畫面、離線可玩

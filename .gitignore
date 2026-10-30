@@ -4,6 +4,9 @@ node_modules/
 # Vercel
 .vercel/
 
+# Vercel 部署目錄（純 build 產物，由 build.js 組裝）
+public/
+
 # 環境變數
 .env
 .env.*

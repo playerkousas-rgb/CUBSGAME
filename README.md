@@ -68,15 +68,21 @@ repo 已經附 `vercel.json`，**唔使改任何設定**：
 
 1. 確認代碼已 push 去 GitHub（`main` branch）。
 2. 去 [vercel.com/new](https://vercel.com/new) → **Import Git Repository** → 揀呢個 repo。
-3. Framework Preset 選 **Other**；Build Command 同 Output Directory **留空**
-   （`vercel.json` 已寫 `"buildCommand": ""`，Vercel 唔會跑 build，直接 serve 靜態檔）。
-4. 按 **Deploy**。幾秒後就有 `https://<你的project>.vercel.app`。
+3. Framework Preset 選 **Other**；import 畫面嘅 Build Command / Output Directory
+   **維持原樣就得** —— `vercel.json` 已明確 pin 咗 `buildCommand: "node build.js"` 同
+   `outputDirectory: "public"`，會覆蓋 UI 嘅預設值。
+4. 按 **Deploy**。Build 會跑 `node build.js`（產生 `dist/` 單檔＋組裝 `public/`），
+   然後 Vercel serve `public/`。幾秒後就有 `https://<你的project>.vercel.app`。
 5. 之後每次 push 去 `main`，Vercel 會**自動重新部署**（Git integration）。
 
 部署後：
-- 網站根目錄 = repo 根目錄，`index.html` + `css/` + `js/` + `icons/` 直接 serve。
+- 網站根目錄 = `public/` 內容（`index.html` + `css/` + `js/` + `icons/` + PWA 資產嘅完整副本）。
 - 單檔成品亦都上到線：`https://<project>.vercel.app/dist/`（俾團長直接下載一個檔案）。
 - `vercel.json` 已設好：`sw.js` 永不快取（保證更新推得出去）、security headers、clean URLs。
+
+**Troubleshooting：** 如果見到 `[STATIC_BUILD_NO_OUT_DIR] No Output Directory named "public" found`，
+代表 build 緊嘅 commit **未有新 `vercel.json`／`build.js`**（例如 Vercel 嘅 production branch
+仲係舊 `main`）。Merge 最新代碼去 `main`（或喺 Project Settings 改 production branch），再 Redeploy。
 
 > 如果想用 GitHub Pages 多過 Vercel：開 repo Settings → Pages → Source 選 `main` / root 即可，
 > 呢個站係純靜態，Pages 一樣跑得。但 Pages 冇 `vercel.json` 嘅 header 控制，SW 更新會較慢。
@@ -125,9 +131,10 @@ cub-scout-quest/
 ├── .github/
 │   └── workflows/
 │       └── ci.yml      # CI：check + 確認 dist/docs 已同步 + 單檔大細 sanity
-├── build.js            # 打包成單一 HTML（會剥除 PWA 區塊）
+├── build.js            # 打包成單一 HTML + 組裝 public/（會剥除 PWA 區塊）
 ├── dist/
 │   └── index.html      # ★ 單檔成品（要派給小朋友／團長就用這個）
+├── public/             # Vercel 部署目錄（純 build 產物，已 gitignore）
 ├── .gitignore
 └── package.json
 ```
@@ -203,6 +210,7 @@ cub-scout-quest/
 | **不用 React / 不用框架** | 這個專案的核心是「內容 + 遊戲規則」，不是複雜 UI。零依賴 → 一個 HTML 誰都能開、十年後還能開、GitHub Pages／Vercel 直接放。 |
 | **不用後端** | 第一版要驗證的是「小朋友會唔會玩」，不是「資料庫要唔要 scale」。進度存 localStorage + 匯出碼，足夠一個團用。 |
 | **PWA 而唔係原生 App** | 團長／家長唔想裝 App、學校平板唔想管上架。PWA 加到主畫面就有近似原生嘅體驗，兼且離線可用、自動更新。 |
+| **部署目錄係 build 組裝嘅 `public/`，唔係 repo root** | Vercel 嘅 static builder 會自動跑 `package.json` 嘅 build script、並預設搵 output directory；與其賭預設行為，不如 build 明確組裝 `public/`＋`vercel.json` pin 死 `outputDirectory`，任何環境都咁樣行。順手把單檔版放喺 `/dist/`。 |
 | **Service worker：導航 network-first、資源 SWR** | 團長改完題目，小朋友下次開 app 要即刻拿到新版（導航行網絡）；但載入要快、斷線要玩得（資源行快取＋背景更新）。 |
 | **徽章依現行手冊（40 款）而唔係舊制（42 款）** | 舊制嘅「42 款／56 個」已過時：自然章 2020-04-01 取消、世界童軍環境章／維護自然世界章移出活動徽章、新增道路安全章。教一個已取消嘅徽章，團長審稿時會即時出事。 |
 | **不是每個項目都做成遊戲** | 露營、服務、家庭章這些必須真實世界完成。硬做成點擊遊戲會失真，領袖也不會認。詳見 `docs/設計原則.md`。 |
