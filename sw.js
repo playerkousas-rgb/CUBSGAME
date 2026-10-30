@@ -13,7 +13,7 @@
      bump 一級（例如 cubgame-v0.4.1），activate 時就會清走舊 cache。
    ========================================================= */
 
-const CACHE = 'cubgame-v0.4.1';
+const CACHE = 'cubgame-v0.5.0';
 
 const SHELL = [
   '/',

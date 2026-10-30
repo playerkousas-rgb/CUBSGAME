@@ -47,6 +47,21 @@
 </header>
 
 <main class="wrap">
+  <div class="card hidden" id="installBanner" style="border:2px solid #D9A227">
+    <div style="display:flex;gap:12px;align-items:center">
+      <div style="font-size:30px">📲</div>
+      <div style="flex:1 1 auto;min-width:0">
+        <b>加到主畫面</b>
+        <div class="muted">把「幼童軍歷險」裝上你部手機：離線照玩、進度留住、開波快啲。</div>
+      </div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn small gold" id="btnInstall">即刻安裝</button>
+      <button class="btn small ghost" id="btnInstallHow">睇步驟</button>
+      <button class="btn small ghost" id="btnInstallDismiss">暫住</button>
+    </div>
+  </div>
+
   <section id="view-path">
     <div class="card">
       <div class="card-head"><div class="h2">🗺️ 歷險地圖 <small>全部 35 關已解鎖</small></div></div>
@@ -97,6 +112,19 @@
     </div>
   </section>
 
+  <section id="view-leader" class="hidden">
+    <div class="card">
+      <div class="card-head"><div class="h2">👨🏫 團長名冊 <small>貼幼童軍嘅進度碼，睇佢 tick 咗</small></div></div>
+      <p class="muted" style="margin-bottom:10px">幼童軍過關後，會由「我」分頁傳進度碼俾你（WhatsApp 或貼上）。貼入下面按「登記／更新」，即可睇佢嘅過關 tick、徽章同 XP。名冊只存喺你呢部裝置。</p>
+      <textarea id="rosterBox" spellcheck="false" placeholder="貼上幼童軍嘅進度碼（或另一位團長匯出嘅名冊碼）…"></textarea>
+      <div class="row" style="margin-top:10px">
+        <button class="btn small" id="btnRosterAdd">登記／更新</button>
+        <button class="btn small ghost" id="btnRosterExport">匯出名冊碼</button>
+      </div>
+    </div>
+    <div id="rosterList"></div>
+  </section>
+
   <section id="view-me" class="hidden">
     <div class="card">
       <div class="card-head"><div class="h2">👤 我的資料</div></div>
@@ -111,6 +139,11 @@
         <button class="btn small" id="btnExport">匯出進度碼</button>
         <button class="btn small ghost" id="btnImport">匯入進度碼</button>
       </div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn small gold" id="btnShareWa">📤 傳給團長（WhatsApp）</button>
+        <button class="btn small ghost" id="btnCopyCode">複製</button>
+      </div>
+      <p class="src" style="margin-top:8px">過咗關就按「傳給團長」——團長喺「團長」分頁貼入進度碼，就睇到你 tick 咗邊幾關。</p>
     </div>
     <div class="card">
       <div class="card-head"><div class="h2">⚙️ 設定</div></div>
@@ -126,6 +159,7 @@
     <button class="tab" data-tab="catalog"><span class="ic">🎲</span>玩法</button>
     <button class="tab" data-tab="badges"><span class="ic">🎖️</span>徽章</button>
     <button class="tab" data-tab="daily"><span class="ic">🔥</span>每日</button>
+    <button class="tab" data-tab="leader"><span class="ic">👨🏫</span>團長</button>
     <button class="tab" data-tab="me"><span class="ic">🐺</span>我</button>
   </div>
 </nav>
@@ -136,6 +170,14 @@
     <div class="sub" id="mSub"></div>
     <div class="lv-row" id="mLevels"></div>
     <button class="btn ghost" id="mClose" style="width:100%;margin-top:16px">關閉</button>
+  </div>
+</div>
+
+<div class="modal-bg" id="howBg">
+  <div class="modal">
+    <h3>📲 加到主畫面</h3>
+    <div class="sub" id="howText" style="white-space:pre-line;text-align:left"></div>
+    <button class="btn ghost" id="howClose" style="width:100%;margin-top:16px">關閉</button>
   </div>
 </div>
 

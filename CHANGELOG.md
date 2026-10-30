@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.5.0 — 團長闭环：裝 app → 過關 tick → 團長睇到
+- **👨🏫 團長名冊**（新分頁，純前端零後台）：貼幼童軍進度碼 → 登記／更新成員；
+  睇每人 ✅ n/35 關、徽章數、XP、streak、逐關 tick 明細；名冊存團長自己裝置、
+  可匯出名冊碼備忘／交接；支援合併另一位團長嘅名冊碼
+- **📤 傳給團長（WhatsApp）**：「我」分頁一鍵開 wa.me，預填姓名／旅團／過關數／進度碼；
+  另加「複製」鈕（clipboard API + fallback）
+- **📲 安裝引導**：未裝 PWA 時顯示加主畫面 banner；Android 行 beforeinstallprompt 直接裝，
+  iOS／桌面顯示圖文步驟 modal；裝咗（standalone）自動收埋
+- `sw.js` CACHE bump 去 `cubgame-v0.5.0`
+- README 新增「團長工作流程」章節；Roadmap M6 備註輕量名冊已完成
+
 ## v0.4.1 — 修 Vercel STATIC_BUILD_NO_OUT_DIR
 - **Root cause**：Vercel 嘅 static builder 見到 `package.json` 有 `build` script 就會自動跑，
   然後預設搵 `public/` 做 output directory；舊 `vercel.json` 只寫 `buildCommand: ""` 而冇 pin
